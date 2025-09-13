@@ -1,14 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import FeedbackTable from './components/FeedbackTable'
 
+const API_URL = "http://localhost:8000";
+
+async function fetchFeedback() {
+  const res = await fetch(`${API_URL}/feedback`);
+  const data = await res.json();
+  console.log(data);
+  return data;
+}
+
 function App() {
   const [feedbacks, setFeedbacks] = useState([])
 
   useEffect(() => {
-    fetch('http://localhost:8000/feedback')
-      .then((res) => res.json())
-      .then((data) => setFeedbacks(data))
-      .catch((err) => console.error('Error fetching feedback:', err))
+    const fetchData = async () => {
+      try {
+        const data = await fetchFeedback();
+        setFeedbacks(data);
+      } catch (err) {
+        console.error('Error fetching feedback:', err);
+      }
+    };
+    fetchData();
   }, [])
 
   return (
