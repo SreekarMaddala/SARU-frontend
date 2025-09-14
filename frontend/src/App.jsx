@@ -27,7 +27,11 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-3xl font-bold mb-6">Feedback Collector MVP 🚀</h1>
+      <header className="flex justify-between items-center mb-6">
+        <img src="/logo.png" alt="Logo" className="h-10" />
+        <h1 className="text-3xl font-bold">Feedback Collector MVP 🚀</h1>
+        <div className="h-10 w-10 bg-gray-300 flex items-center justify-center text-xs">Company Logo</div>
+      </header>
       <FeedbackTable feedbacks={feedbacks} />
     </div>
   )
