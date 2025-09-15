@@ -7,12 +7,13 @@ export default function Welcome() {
     { name: "Neutral", value: 20 },
     { name: "Negative", value: 10 },
   ];
-  const COLORS = ["#00C49F", "#FFBB28", "#FF4444"];
+
+  const COLORS = ["#00F5D4", "#00C2A8", "#007A74"];
 
   return (
     <div className="min-h-screen bg-saru-black">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-gradient-to-r from-black via-saru-slate to-saru-black border-b border-saru-teal/40 backdrop-blur-md">
+      <nav className="sticky top-0 z-50 bg-gradient-to-r from-saru-black via-saru-slate to-saru-black border-b border-saru-teal/40 backdrop-blur-md">
         <div className="flex justify-between items-center px-8 py-6">
           <div className="flex items-center space-x-4 group">
             <img
@@ -20,7 +21,7 @@ export default function Welcome() {
               alt="Logo"
               className="h-16 transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
             />
-            <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-saru-teal to-saru-cyan">
+            <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-saru-cyan via-saru-teal to-saru-teal-dark">
               Eagle Feedback Collector
             </h1>
           </div>
@@ -56,7 +57,7 @@ export default function Welcome() {
         <div className="container mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Text */}
           <div>
-            <h2 className="text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-saru-teal to-saru-cyan mb-6 leading-tight drop-shadow-lg">
+            <h2 className="text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-saru-cyan via-saru-teal to-saru-teal-dark mb-6 leading-tight drop-shadow-lg">
               Soar with Insights 🦅
             </h2>
             <p className="text-xl text-saru-cyan/80 mb-8">
@@ -83,37 +84,35 @@ export default function Welcome() {
           <div className="relative">
             <div className="bg-saru-slate rounded-2xl p-10 shadow-2xl border border-saru-teal/40 relative overflow-hidden group">
               {/* Feather-like background effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 via-saru-teal/20 to-transparent animate-pulse blur-2xl"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-saru-cyan/10 via-saru-teal/20 to-transparent animate-pulse blur-2xl"></div>
 
-              {/* Floating feathers */}
+              {/* Floating eagle-feather vibes */}
               <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
                 <div className="absolute w-3 h-3 bg-saru-teal rounded-full animate-bounce top-10 left-12 opacity-70"></div>
-                <div className="absolute w-4 h-4 bg-yellow-400 rounded-full animate-ping top-20 right-16 opacity-70"></div>
-                <div className="absolute w-3 h-3 bg-saru-cyan rounded-full animate-bounce delay-200 bottom-12 left-1/3 opacity-70"></div>
+                <div className="absolute w-4 h-4 bg-saru-cyan rounded-full animate-ping top-20 right-16 opacity-70"></div>
+                <div className="absolute w-3 h-3 bg-saru-teal-light rounded-full animate-bounce delay-200 bottom-12 left-1/3 opacity-70"></div>
               </div>
 
               <div className="space-y-6 relative z-10">
                 {/* Futuristic header bar */}
-                <div className="bg-gradient-to-r from-yellow-400 via-saru-teal to-saru-cyan h-5 rounded-full animate-pulse shadow-lg"></div>
+                <div className="bg-gradient-to-r from-saru-cyan via-saru-teal to-saru-teal-dark h-5 rounded-full animate-pulse shadow-lg"></div>
 
                 {/* Stats */}
                 <div className="grid grid-cols-3 gap-4 mt-8">
                   <div className="p-4 rounded-xl bg-saru-slate-dark border border-saru-teal/30 shadow-md hover:shadow-saru-teal/40 transition transform hover:scale-105">
                     <p className="text-saru-teal-light text-xs">Feedbacks</p>
                     <h3 className="text-white font-bold text-lg">12,430</h3>
-                    <span className="text-green-400 text-xs">+15% MoM</span>
+                    <span className="text-saru-cyan text-xs">+15% MoM</span>
                   </div>
                   <div className="p-4 rounded-xl bg-saru-slate-dark border border-saru-teal/30 shadow-md hover:shadow-saru-teal/40 transition transform hover:scale-105">
                     <p className="text-saru-teal-light text-xs">NPS Score</p>
                     <h3 className="text-white font-bold text-lg">68</h3>
-                    <span className="text-green-400 text-xs">↑ Strong</span>
+                    <span className="text-saru-cyan text-xs">↑ Strong</span>
                   </div>
                   <div className="p-4 rounded-xl bg-saru-slate-dark border border-saru-teal/30 shadow-md hover:shadow-saru-teal/40 transition transform hover:scale-105">
-                    <p className="text-saru-teal-light text-xs">
-                      Positivity %
-                    </p>
+                    <p className="text-saru-teal-light text-xs">Positivity %</p>
                     <h3 className="text-white font-bold text-lg">72%</h3>
-                    <span className="text-green-400 text-xs">↑ Healthy</span>
+                    <span className="text-saru-cyan text-xs">↑ Healthy</span>
                   </div>
                 </div>
 
