@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import Welcome from './components/Welcome';
+import Home from './components/Home';
 import FeedbackTablePage from './pages/FeedbackTablePage';
 import DashboardPage from './pages/DashboardPage';
 
@@ -15,7 +15,7 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<Welcome />} />
+          <Route path="/" element={<Home />} />
           <Route path="/feedback-table" element={<ProtectedRoute><FeedbackTablePage /></ProtectedRoute>} />
           <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
         </Routes>
