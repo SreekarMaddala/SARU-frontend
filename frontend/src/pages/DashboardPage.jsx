@@ -5,12 +5,15 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-saru-black">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-saru-black bg-opacity-90 backdrop-blur-sm">
+      <nav className="sticky top-0 z-50 bg-gradient-to-r from-saru-cyan via-saru-teal to-saru-teal-dark border-b border-saru-cyan/60 backdrop-blur-md shadow-lg">
         <div className="flex justify-between items-center p-8">
           <div className="flex items-center space-x-4">
             <Link to="/" className="flex items-center space-x-4">
-              <img src="/logo.png" alt="Logo" className="h-24" />
-              <h1 className="text-3xl font-bold text-saru-cyan">Feedback Collector</h1>
+              <img src="/logo - Copy.png" alt="Logo" className="h-24" />
+              <div>
+                <h1 className="text-4xl font-bold text-saru-cyan">SARU</h1>
+                <p className="text-sm text-saru-cyan/60">feedback collector</p>
+              </div>
             </Link>
           </div>
           <div className="hidden md:flex space-x-8">

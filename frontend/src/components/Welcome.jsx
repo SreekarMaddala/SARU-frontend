@@ -13,17 +13,22 @@ export default function Welcome() {
   return (
     <div className="min-h-screen bg-saru-black">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-gradient-to-r from-saru-black via-saru-slate to-saru-black border-b border-saru-teal/40 backdrop-blur-md">
+      <nav className="sticky top-0 z-50 bg-gradient-to-r from-saru-cyan via-saru-teal to-saru-teal-dark border-b border-saru-cyan/60 backdrop-blur-md shadow-lg">
         <div className="flex justify-between items-center px-8 py-6">
           <div className="flex items-center space-x-4 group">
             <img
-              src="/logo.png"
+              src="/logo - Copy.png"
               alt="Logo"
               className="h-16 transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
             />
-            <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-saru-cyan via-saru-teal to-saru-teal-dark">
-              Eagle Feedback Collector
-            </h1>
+            <div>
+              <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-saru-cyan via-saru-teal to-saru-teal-dark">
+                SARU
+              </h1>
+              <p className="text-sm text-saru-cyan/60">
+                feedback collector
+              </p>
+            </div>
           </div>
           <div className="hidden md:flex space-x-10 text-lg font-medium">
             <Link

@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
-import FeedbackTable from '../components/FeedbackTable';
-import { useState, useEffect } from 'react';
+ import { Link } from "react-router-dom";
+import FeedbackTable from "../components/FeedbackTable";
+import { useState, useEffect } from "react";
 
 export default function FeedbackTablePage() {
   const [feedbacks, setFeedbacks] = useState([]);
@@ -8,45 +8,71 @@ export default function FeedbackTablePage() {
   useEffect(() => {
     const fetchFeedback = async () => {
       try {
-        const res = await fetch('http://localhost:8000/feedback');
+        const res = await fetch("http://localhost:8000/feedback");
         const data = await res.json();
         setFeedbacks(data);
       } catch (error) {
-        console.error('Error fetching feedback:', error);
+        console.error("Error fetching feedback:", error);
       }
     };
     fetchFeedback();
   }, []);
 
   return (
-    <div className="min-h-screen bg-netflix-black">
+    <div className="min-h-screen bg-gray-50">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-netflix-black bg-opacity-90 backdrop-blur-sm">
-        <div className="flex justify-between items-center p-8">
-          <div className="flex items-center space-x-4">
-            <Link to="/" className="flex items-center space-x-4">
-              <img src="/logo.png" alt="Logo" className="h-16" />
-              <h1 className="text-3xl font-bold text-netflix-light">Feedback Collector</h1>
-            </Link>
-          </div>
-          <div className="hidden md:flex space-x-8">
-            <Link to="/dashboard" className="text-netflix-light hover:text-netflix-red transition duration-300 relative">
+      <nav className="sticky top-0 z-50 bg-gradient-to-r from-saru-cyan via-saru-teal to-saru-teal-dark border-b border-saru-cyan/60 backdrop-blur-md shadow-lg">
+        <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
+          {/* Logo + Brand */}
+          <Link to="/" className="flex items-center space-x-6">
+            <img src="/logo - Copy.png" alt="SARU Logo" className="h-10" />
+            <div>
+              <h1 className="text-2xl font-bold text-gray-800">SARU</h1>
+              <p className="text-xs text-gray-500 tracking-wide">Feedback Collector</p>
+            </div>
+          </Link>
+
+          {/* Navigation Links */}
+          <div className="hidden md:flex space-x-8 font-medium">
+            <Link
+              to="/dashboard"
+              className="text-gray-700 hover:text-blue-600 transition-colors"
+            >
               Dashboard
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-netflix-red transition-all duration-300 hover:w-full"></span>
             </Link>
-            <span className="text-netflix-red font-semibold">Feedback Table</span>
-            <a href="#" className="text-netflix-light hover:text-netflix-red transition duration-300 relative">
+            <span className="text-blue-600 font-semibold border-b-2 border-blue-600">
+              Feedback Table
+            </span>
+            <a
+              href="#"
+              className="text-gray-700 hover:text-blue-600 transition-colors"
+            >
               About
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-netflix-red transition-all duration-300 hover:w-full"></span>
             </a>
           </div>
-          <button className="md:hidden text-netflix-light">☰</button>
+
+          {/* Mobile Menu Button */}
+          <button className="md:hidden text-gray-700">☰</button>
         </div>
       </nav>
-      <div className="p-8">
-        <h1 className="text-5xl font-bold text-netflix-light mb-8">📋 Feedback Table</h1>
-        <FeedbackTable feedbacks={feedbacks} />
-      </div>
+
+      {/* Page Content */}
+      <main className="max-w-7xl mx-auto px-6 py-10">
+        <header className="mb-10">
+          <h1 className="text-4xl font-extrabold text-gray-900">
+            📋 Feedback Table
+          </h1>
+          <p className="mt-2 text-gray-600">
+            Review and analyze all customer feedback in one place.
+          </p>
+        </header>
+
+        {/* Feedback Table */}
+        <div className="bg-white rounded-2xl shadow p-6">
+          <FeedbackTable feedbacks={feedbacks} />
+        </div>
+      </main>
     </div>
   );
 }
+he
