@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
+import { useState } from "react";
 
 export default function Welcome() {
+  const [inputValue, setInputValue] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const data = [
     { name: "Positive", value: 70 },
     { name: "Neutral", value: 20 },
@@ -9,6 +14,28 @@ export default function Welcome() {
   ];
 
   const COLORS = ["#00F5D4", "#00C2A8", "#007A74"];
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!inputValue.trim()) return;
+    setLoading(true);
+    try {
+      const res = await fetch("http://localhost:8000/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userInput: inputValue })
+      });
+      if (res.ok) {
+        setMessage("Feedback submitted successfully!");
+        setInputValue("");
+      } else {
+        setMessage("Failed to submit feedback.");
+      }
+    } catch (error) {
+      setMessage("Error submitting feedback.");
+    }
+    setLoading(false);
+  };
 
   return (
     <div className="min-h-screen bg-saru-black">
@@ -146,6 +173,30 @@ export default function Welcome() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Feedback Submission Section */}
+      <section className="py-16 bg-saru-slate">
+        <div className="container mx-auto px-8">
+          <h2 className="text-4xl font-bold text-saru-cyan mb-8 text-center">Share Your Feedback</h2>
+          <form onSubmit={handleSubmit} className="max-w-md mx-auto">
+            <textarea
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Enter your feedback here..."
+              className="w-full bg-saru-slate-dark text-saru-cyan border border-saru-teal/30 rounded-lg px-4 py-2 mb-4 focus:border-saru-teal focus:outline-none resize-none"
+              rows="4"
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-saru-teal to-saru-teal-dark text-saru-cyan px-6 py-3 rounded-lg font-semibold hover:from-saru-teal-dark hover:to-saru-teal transition duration-300 disabled:opacity-50"
+            >
+              {loading ? "Submitting..." : "Submit Feedback"}
+            </button>
+            {message && <p className="mt-4 text-center text-saru-cyan">{message}</p>}
+          </form>
         </div>
       </section>
 
