@@ -1,14 +1,18 @@
- import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import FeedbackTable from "../components/FeedbackTable";
 import { useState, useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function FeedbackTablePage() {
+  const { token } = useAuth();
   const [feedbacks, setFeedbacks] = useState([]);
 
   useEffect(() => {
     const fetchFeedback = async () => {
       try {
-        const res = await fetch("http://localhost:8000/feedback");
+        const res = await fetch("http://localhost:8000/feedback", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         const data = await res.json();
         setFeedbacks(data);
       } catch (error) {
@@ -16,7 +20,7 @@ export default function FeedbackTablePage() {
       }
     };
     fetchFeedback();
-  }, []);
+  }, [token]);
 
   return (
     <div className="min-h-screen bg-gray-50">

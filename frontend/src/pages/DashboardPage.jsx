@@ -1,7 +1,15 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import Dashboard from '../components/Dashboard';
 
 export default function DashboardPage() {
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    window.location.href = "/";
+  };
+
   return (
     <div className="min-h-screen bg-saru-black">
       {/* Navigation */}
@@ -16,7 +24,7 @@ export default function DashboardPage() {
               </div>
             </Link>
           </div>
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden md:flex space-x-8 items-center">
             <span className="text-saru-teal font-semibold">Dashboard</span>
             <Link to="/feedback-table" className="text-saru-cyan hover:text-saru-teal transition duration-300 relative">
               Feedback Table
@@ -26,6 +34,12 @@ export default function DashboardPage() {
               About
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-saru-teal transition-all duration-300 hover:w-full"></span>
             </a>
+            <button
+              onClick={handleLogout}
+              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300"
+            >
+              Logout
+            </button>
           </div>
           <button className="md:hidden text-saru-cyan">☰</button>
         </div>

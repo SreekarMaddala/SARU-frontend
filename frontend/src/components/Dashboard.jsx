@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import { useAuth } from '../contexts/AuthContext';
 import FeedbackTable from './FeedbackTable';
 
 export default function Dashboard() {
+  const { token } = useAuth();
   const [file, setFile] = useState(null);
   const [sheetId, setSheetId] = useState("");
   const [twitterHandle, setTwitterHandle] = useState("");
@@ -14,7 +16,9 @@ export default function Dashboard() {
   const loadFeedbacks = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8000/feedback");
+      const res = await fetch("http://localhost:8000/feedback", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const data = await res.json();
       setFeedbacks(data);
     } catch (err) {
@@ -59,6 +63,7 @@ export default function Dashboard() {
       formData.append("file", file);
       const res = await fetch("http://localhost:8000/feedback/upload_csv", {
         method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
       const data = await res.json();
@@ -78,7 +83,7 @@ export default function Dashboard() {
     try {
       const res = await fetch(
         `http://localhost:8000/feedback/import_google_forms?sheet_id=${sheetId}`,
-        { method: "POST" }
+        { method: "POST", headers: { Authorization: `Bearer ${token}` } }
       );
       const data = await res.json();
       alert(`Inserted ${data.inserted} feedbacks`);
@@ -96,6 +101,7 @@ export default function Dashboard() {
     try {
       const res = await fetch("http://localhost:8000/feedback/import_emails", {
         method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
       alert(`Inserted ${data.inserted} feedbacks`);
