@@ -7,13 +7,20 @@ export default function Dashboard() {
   const [twitterHandle, setTwitterHandle] = useState("");
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [nextTwitterFetch, setNextTwitterFetch] = useState(null); // For 24h restriction
+  const [countdown, setCountdown] = useState(""); // Timer text
 
-  // Fetch feedback list
+  // ------------------- Load Feedbacks -------------------
   const loadFeedbacks = async () => {
     setLoading(true);
-    const res = await fetch("http://localhost:8000/feedback");
-    const data = await res.json();
-    setFeedbacks(data);
+    try {
+      const res = await fetch("http://localhost:8000/feedback");
+      const data = await res.json();
+      setFeedbacks(data);
+    } catch (err) {
+      console.error("Error fetching feedbacks:", err);
+      alert("Failed to load feedbacks");
+    }
     setLoading(false);
   };
 
@@ -21,58 +28,120 @@ export default function Dashboard() {
     loadFeedbacks();
   }, []);
 
-  // Upload CSV
+  // ------------------- Countdown Timer -------------------
+  useEffect(() => {
+    if (!nextTwitterFetch) return;
+
+    const interval = setInterval(() => {
+      const now = new Date();
+      const diff = new Date(nextTwitterFetch) - now;
+      if (diff <= 0) {
+        setCountdown("");
+        setNextTwitterFetch(null);
+        clearInterval(interval);
+      } else {
+        const hours = Math.floor(diff / 1000 / 3600);
+        const minutes = Math.floor((diff / 1000 / 60) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+        setCountdown(`${hours}h ${minutes}m ${seconds}s`);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [nextTwitterFetch]);
+
+  // ------------------- Upload CSV -------------------
   const handleUploadCSV = async () => {
     if (!file) return alert("Please select a file first.");
     setLoading(true);
-    const formData = new FormData();
-    formData.append("file", file);
-    const res = await fetch("http://localhost:8000/feedback/upload_csv", {
-      method: "POST",
-      body: formData,
-    });
-    const data = await res.json();
-    alert(`Inserted ${data.inserted} feedbacks`);
-    await loadFeedbacks();
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("http://localhost:8000/feedback/upload_csv", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      alert(`Inserted ${data.inserted} feedbacks`);
+      await loadFeedbacks();
+    } catch (err) {
+      console.error(err);
+      alert("CSV upload failed");
+    }
+    setLoading(false);
   };
 
-  // Import Google Forms
+  // ------------------- Import Google Forms -------------------
   const handleGoogleForms = async () => {
     if (!sheetId) return alert("Enter a Google Sheet ID.");
     setLoading(true);
-    const res = await fetch(
-      `http://localhost:8000/feedback/import_google_forms?sheet_id=${sheetId}`,
-      { method: "POST" }
-    );
-    const data = await res.json();
-    alert(`Inserted ${data.inserted} feedbacks`);
-    await loadFeedbacks();
+    try {
+      const res = await fetch(
+        `http://localhost:8000/feedback/import_google_forms?sheet_id=${sheetId}`,
+        { method: "POST" }
+      );
+      const data = await res.json();
+      alert(`Inserted ${data.inserted} feedbacks`);
+      await loadFeedbacks();
+    } catch (err) {
+      console.error(err);
+      alert("Google Forms import failed");
+    }
+    setLoading(false);
   };
 
-  // Import Emails
+  // ------------------- Import Emails -------------------
   const handleEmails = async () => {
     setLoading(true);
-    const res = await fetch("http://localhost:8000/feedback/import_emails", {
-      method: "POST",
-    });
-    const data = await res.json();
-    alert(`Inserted ${data.inserted} feedbacks`);
-    await loadFeedbacks();
+    try {
+      const res = await fetch("http://localhost:8000/feedback/import_emails", {
+        method: "POST",
+      });
+      const data = await res.json();
+      alert(`Inserted ${data.inserted} feedbacks`);
+      await loadFeedbacks();
+    } catch (err) {
+      console.error(err);
+      alert("Email import failed");
+    }
+    setLoading(false);
   };
 
-  // Import Twitter
+  // ------------------- Import Twitter Mentions -------------------
   const handleTwitter = async () => {
     if (!twitterHandle) return alert("Enter a Twitter handle.");
+    if (nextTwitterFetch) {
+      alert(`You can fetch Twitter mentions again after ${countdown}`);
+      return;
+    }
     setLoading(true);
-    const res = await fetch(
-      `http://localhost:8000/feedback/import_twitter?handle=${twitterHandle}`,
-      { method: "POST" }
-    );
-    const data = await res.json();
-    alert(`Inserted ${data.inserted} feedbacks`);
-    await loadFeedbacks();
+    try {
+      const res = await fetch(
+        `http://localhost:8000/feedback/import_twitter?handle=${twitterHandle}`,
+        { method: "POST" }
+      );
+      const data = await res.json();
+
+      if (data.inserted === 0 && data.message) {
+        alert(data.message);
+        // Parse next available time from backend message
+        const match = data.message.match(/after (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) UTC/);
+        if (match) {
+          setNextTwitterFetch(match[1] + " UTC");
+        }
+      } else {
+        alert(`Inserted ${data.inserted} feedbacks`);
+      }
+
+      await loadFeedbacks();
+    } catch (err) {
+      console.error(err);
+      alert("Twitter import failed");
+    }
+    setLoading(false);
   };
 
+  // ------------------- JSX Render -------------------
   return (
     <div className="p-8 space-y-12">
       <h1 className="text-5xl font-bold text-saru-cyan mb-8">📊 Feedback Dashboard</h1>
@@ -138,9 +207,15 @@ export default function Dashboard() {
           <button
             onClick={handleTwitter}
             className="w-full bg-gradient-to-r from-saru-teal to-saru-teal-dark text-saru-cyan px-6 py-3 rounded-lg font-semibold hover:from-saru-teal-dark hover:to-saru-teal transition duration-300"
+            disabled={!!nextTwitterFetch} // disable while waiting
           >
             Import
           </button>
+          {countdown && (
+            <p className="mt-2 text-yellow-400 font-semibold">
+              Next Twitter fetch available in: {countdown}
+            </p>
+          )}
         </div>
       </div>
 
