@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 
-export default function Home() {
+export default function PageOne() {
   const { isAuthenticated, login, logout, loading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
