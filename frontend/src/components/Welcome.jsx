@@ -41,12 +41,12 @@ export default function Welcome() {
     <div className="min-h-screen bg-saru-black">
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-gradient-to-r from-saru-cyan via-saru-teal to-saru-teal-dark border-b border-saru-cyan/60 backdrop-blur-md shadow-lg">
-        <div className="flex justify-between items-center px-8 py-6">
+        <div className="flex justify-between items-center px-8 py-3">
           <div className="flex items-center space-x-4 group">
             <img
               src="/logo - Copy.png"
               alt="Logo"
-              className="h-16 transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
+              className="h-14 transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
             />
             <div>
               <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-saru-cyan via-saru-teal to-saru-teal-dark">
@@ -77,6 +77,13 @@ export default function Welcome() {
               className="relative text-saru-cyan hover:text-saru-teal transition duration-300"
             >
               About
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-saru-teal transition-all duration-300 hover:w-full"></span>
+            </a>
+            <a
+              href="#"
+              className="relative text-saru-cyan hover:text-saru-teal transition duration-300"
+            >
+              Careers
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-saru-teal transition-all duration-300 hover:w-full"></span>
             </a>
           </div>
