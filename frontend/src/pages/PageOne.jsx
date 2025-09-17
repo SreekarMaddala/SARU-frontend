@@ -41,16 +41,18 @@ export default function PageOne() {
             <img
               src="/logo - Copy.png"
               alt="Logo"
-              className="h-14 transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
+              className="h-14 w-20 transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
             />
-            <div>
-              <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-saru-cyan via-saru-teal to-saru-teal-dark">
-                SARU
-              </h1>
-              <p className="text-sm text-saru-cyan/60">
-                feedback collector
-              </p>
-            </div>
+            <img
+              src="/text.png"
+              alt="SARU text"
+              className="ml-8 h-10"
+            />
+          </div>
+          <div className="flex items-center space-x-6">
+            <a href="#" className="text-saru-cyan hover:text-saru-teal transition duration-300">Pricing</a>
+            <a href="#" className="text-saru-cyan hover:text-saru-teal transition duration-300">Solutions</a>
+            <a href="#" className="text-saru-cyan hover:text-saru-teal transition duration-300">Careers</a>
           </div>
           <div className="flex items-center space-x-4">
             {isAuthenticated ? (
