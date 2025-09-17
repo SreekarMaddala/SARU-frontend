@@ -50,9 +50,9 @@ export default function PageOne() {
             />
           </div>
           <div className="flex items-center space-x-6">
-            <a href="#" className="text-saru-cyan hover:text-saru-teal transition duration-300">Pricing</a>
+            <Link to="/pricing" className="text-saru-cyan hover:text-saru-teal transition duration-300">Pricing</Link>
             <a href="#" className="text-saru-cyan hover:text-saru-teal transition duration-300">Solutions</a>
-            <a href="#" className="text-saru-cyan hover:text-saru-teal transition duration-300">Careers</a>
+            <Link to="/careers" className="text-saru-cyan hover:text-saru-teal transition duration-300">Careers</Link>
           </div>
           <div className="flex items-center space-x-4">
             {isAuthenticated ? (

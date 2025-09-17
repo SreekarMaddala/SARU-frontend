@@ -3,6 +3,8 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import PageOne from './pages/PageOne';
 import FeedbackTablePage from './pages/FeedbackTablePage';
 import DashboardPage from './pages/DashboardPage';
+import PricingPage from './pages/PricingPage';
+import CareersPage from './pages/CareersPage';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -18,6 +20,8 @@ function App() {
           <Route path="/" element={<PageOne />} />
           <Route path="/feedback-table" element={<ProtectedRoute><FeedbackTablePage /></ProtectedRoute>} />
           <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+          <Route path="/pricing" element={<PricingPage />} />
+          <Route path="/careers" element={<CareersPage />} />
         </Routes>
       </Router>
     </AuthProvider>
