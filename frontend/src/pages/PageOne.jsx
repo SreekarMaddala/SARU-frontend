@@ -30,7 +30,12 @@ export default function PageOne() {
     window.location.href = "/";
   };
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-saru-black text-saru-cyan">Loading...</div>;
+  if (loading)
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-saru-black text-saru-cyan">
+        Loading...
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-saru-black">
@@ -41,18 +46,30 @@ export default function PageOne() {
             <img
               src="/logo - Copy.png"
               alt="Logo"
-              className="h-14 w-20 transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
+              className="h-20 w-14 transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
             />
-            <img
-              src="/text.png"
-              alt="SARU text"
-              className="ml-8 h-10"
-            />
+            <img src="/text.png" alt="SARU text" className="ml-8 h-10" />
           </div>
           <div className="flex items-center space-x-6">
-            <Link to="/pricing" className="text-saru-cyan hover:text-saru-teal transition duration-300">Pricing</Link>
-            <a href="#" className="text-saru-cyan hover:text-saru-teal transition duration-300">Solutions</a>
-            <Link to="/careers" className="text-saru-cyan hover:text-saru-teal transition duration-300">Careers</Link>
+            <Link
+              to="/pricing"
+              className="text-saru-cyan hover:text-saru-teal transition duration-300"
+            >
+              Pricing
+            </Link>
+            {/* ✅ Fixed Solutions link */}
+            <Link
+              to="/solutions"
+              className="text-saru-cyan hover:text-saru-teal transition duration-300"
+            >
+              Solutions
+            </Link>
+            <Link
+              to="/careers"
+              className="text-saru-cyan hover:text-saru-teal transition duration-300"
+            >
+              Careers
+            </Link>
           </div>
           <div className="flex items-center space-x-4">
             {isAuthenticated ? (
@@ -86,10 +103,17 @@ export default function PageOne() {
                 </button>
                 {showLogin && (
                   <div className="absolute top-full right-0 mt-2 w-80 bg-saru-slate rounded-xl p-6 shadow-lg border border-saru-teal/30">
-                    <h3 className="text-xl font-semibold text-saru-cyan mb-4">Login to SARU</h3>
+                    <h3 className="text-xl font-semibold text-saru-cyan mb-4">
+                      Login to SARU
+                    </h3>
                     <form onSubmit={handleLogin} className="space-y-4">
                       <div>
-                        <label htmlFor="email" className="block text-saru-cyan mb-1 text-sm">Email</label>
+                        <label
+                          htmlFor="email"
+                          className="block text-saru-cyan mb-1 text-sm"
+                        >
+                          Email
+                        </label>
                         <input
                           id="email"
                           type="email"
@@ -100,7 +124,12 @@ export default function PageOne() {
                         />
                       </div>
                       <div>
-                        <label htmlFor="password" className="block text-saru-cyan mb-1 text-sm">Password</label>
+                        <label
+                          htmlFor="password"
+                          className="block text-saru-cyan mb-1 text-sm"
+                        >
+                          Password
+                        </label>
                         <input
                           id="password"
                           type="password"
@@ -110,7 +139,9 @@ export default function PageOne() {
                           required
                         />
                       </div>
-                      {error && <p className="text-red-500 text-sm">{error}</p>}
+                      {error && (
+                        <p className="text-red-500 text-sm">{error}</p>
+                      )}
                       <button
                         type="submit"
                         className="w-full bg-gradient-to-r from-saru-teal to-saru-teal-dark text-saru-cyan px-4 py-2 rounded-lg font-semibold hover:from-saru-teal-dark hover:to-saru-teal transition duration-300"
@@ -135,7 +166,8 @@ export default function PageOne() {
               Soar with Insights 🦅
             </h2>
             <p className="text-xl text-saru-cyan/80 mb-8">
-              Harness eagle-eyed vision to capture, analyze, and act on feedback—elevating your strategies above the competition.
+              Harness eagle-eyed vision to capture, analyze, and act on
+              feedback—elevating your strategies above the competition.
             </p>
             {isAuthenticated ? (
               <div className="space-x-4">
@@ -153,7 +185,9 @@ export default function PageOne() {
                 </Link>
               </div>
             ) : (
-              <p className="text-lg text-saru-cyan/60">Login to access the dashboard and feedback tools.</p>
+              <p className="text-lg text-saru-cyan/60">
+                Login to access the dashboard and feedback tools.
+              </p>
             )}
           </div>
 
