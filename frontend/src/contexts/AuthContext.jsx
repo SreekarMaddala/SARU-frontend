@@ -1,11 +1,11 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
+    const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
       setIsAuthenticated(true);
@@ -24,31 +24,38 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
+  // ✅ Updated login for FastAPI (OAuth2PasswordRequestForm)
   const login = async (email, password) => {
     try {
-      const res = await fetch('http://localhost:8000/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+      const res = await fetch("http://localhost:8000/company/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          username: email, // FastAPI expects "username", not "email"
+          password: password,
+        }),
       });
+
       if (res.ok) {
         const data = await res.json();
-        const token = data.token;
-        localStorage.setItem('token', token);
+        const token = data.access_token; // matches your FastAPI response
+        localStorage.setItem("token", token);
         setToken(token);
         setIsAuthenticated(true);
         return { success: true };
       } else {
         const error = await res.json();
-        return { success: false, message: error.message || 'Login failed' };
+        return { success: false, message: error.detail || "Login failed" };
       }
     } catch (error) {
-      return { success: false, message: 'Network error' };
+      return { success: false, message: "Network error" };
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     setToken(null);
     setIsAuthenticated(false);
   };
@@ -61,5 +68,9 @@ export const AuthProvider = ({ children }) => {
     loading,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
