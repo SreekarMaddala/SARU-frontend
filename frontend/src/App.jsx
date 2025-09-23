@@ -1,11 +1,14 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { AdminProvider, useAdmin } from './contexts/AdminContext';
 import PageOne from './pages/PageOne';
 import FeedbackTablePage from './pages/FeedbackTablePage';
 import DashboardPage from './pages/DashboardPage';
 import PricingPage from './pages/PricingPage';
 import CareersPage from './pages/CareersPage';
-import SolutionsPage from './pages/SolutionsPage'; // Import the public Solutions page
+import SolutionsPage from './pages/SolutionsPage';
+import AdminLoginPage from './pages/AdminLoginPage';
+import AdminDashboardPage from './pages/AdminDashboardPage';
 
 // Protected route wrapper
 const ProtectedRoute = ({ children }) => {
@@ -48,6 +51,17 @@ function App() {
               <ProtectedRoute>
                 <DashboardPage />
               </ProtectedRoute>
+            }
+          />
+
+          {/* Admin routes */}
+          <Route path="/admin/login" element={<AdminLoginPage />} />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <AdminProvider>
+                <AdminDashboardPage />
+              </AdminProvider>
             }
           />
         </Routes>
