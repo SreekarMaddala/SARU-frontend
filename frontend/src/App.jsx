@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { useAuth } from './contexts/AuthContext';
 import { AdminProvider, useAdmin } from './contexts/AdminContext';
 import PageOne from './pages/PageOne';
 import FeedbackTablePage from './pages/FeedbackTablePage';
@@ -9,6 +9,7 @@ import CareersPage from './pages/CareersPage';
 import SolutionsPage from './pages/SolutionsPage';
 import AdminLoginPage from './pages/AdminLoginPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
+import CompanyLoginPage from './pages/CompanyLoginPage';
 
 // Protected route wrapper
 const ProtectedRoute = ({ children }) => {
@@ -27,46 +28,45 @@ const ProtectedRoute = ({ children }) => {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          {/* Public routes */}
-          <Route path="/" element={<PageOne />} />
-          <Route path="/solutions" element={<SolutionsPage />} />
-          <Route path="/pricing" element={<PricingPage />} />
-          <Route path="/careers" element={<CareersPage />} />
+    <Router>
+      <Routes>
+        {/* Public routes */}
+        <Route path="/" element={<PageOne />} />
+        <Route path="/solutions" element={<SolutionsPage />} />
+        <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/careers" element={<CareersPage />} />
+        <Route path="/company/login" element={<CompanyLoginPage />} />
 
-          {/* Protected routes */}
-          <Route
-            path="/feedback-table"
-            element={
-              <ProtectedRoute>
-                <FeedbackTablePage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
-            }
-          />
+        {/* Protected routes */}
+        <Route
+          path="/feedback-table"
+          element={
+            <ProtectedRoute>
+              <FeedbackTablePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
 
-          {/* Admin routes */}
-          <Route path="/admin/login" element={<AdminLoginPage />} />
-          <Route
-            path="/admin/dashboard"
-            element={
-              <AdminProvider>
-                <AdminDashboardPage />
-              </AdminProvider>
-            }
-          />
-        </Routes>
-      </Router>
-    </AuthProvider>
+        {/* Admin routes */}
+        <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <AdminProvider>
+              <AdminDashboardPage />
+            </AdminProvider>
+          }
+        />
+      </Routes>
+    </Router>
   );
 }
 

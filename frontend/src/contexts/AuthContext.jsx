@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
+    const storedToken = localStorage.getItem("companyToken");
     if (storedToken) {
       setToken(storedToken);
       setIsAuthenticated(true);
@@ -24,30 +24,25 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  // ✅ Updated login for FastAPI (OAuth2PasswordRequestForm) - Form login
+  // Updated login using fetch with JSON body
   const login = async (email, password) => {
     try {
       const res = await fetch("http://localhost:8000/company/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          username: email, // FastAPI expects "username", not "email"
-          password: password,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
       });
 
       if (res.ok) {
         const data = await res.json();
-        const token = data.access_token; // matches your FastAPI response
-        localStorage.setItem("token", token);
+        const token = data.access_token;
+        localStorage.setItem("companyToken", token);
         setToken(token);
         setIsAuthenticated(true);
         return { success: true };
       } else {
-        const error = await res.json();
-        return { success: false, message: error.detail || "Login failed" };
+        const err = await res.json().catch(() => ({}));
+        return { success: false, message: err.detail || "Login failed" };
       }
     } catch (error) {
       return { success: false, message: "Network error" };
@@ -85,7 +80,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("companyToken");
     setToken(null);
     setIsAuthenticated(false);
   };
