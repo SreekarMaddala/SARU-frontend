@@ -3,11 +3,12 @@ import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 
 export default function PageOne() {
-  const { isAuthenticated, login, logout, loading } = useAuth();
+  const { isAuthenticated, login, loginJSON, logout, loading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showLogin, setShowLogin] = useState(false);
+  const [useJSONLogin, setUseJSONLogin] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -16,7 +17,7 @@ export default function PageOne() {
       setError("Email and password are required.");
       return;
     }
-    const result = await login(email, password);
+    const result = useJSONLogin ? await loginJSON(email, password) : await login(email, password);
     if (!result.success) {
       setError(result.message || "Login failed.");
     } else {
@@ -107,6 +108,18 @@ export default function PageOne() {
                       Login to SARU
                     </h3>
                     <form onSubmit={handleLogin} className="space-y-4">
+                      <div className="flex items-center space-x-2">
+                        <input
+                          id="useJSON"
+                          type="checkbox"
+                          checked={useJSONLogin}
+                          onChange={(e) => setUseJSONLogin(e.target.checked)}
+                          className="w-4 h-4 text-saru-teal bg-saru-slate-dark border border-saru-teal/30 rounded focus:ring-saru-teal focus:ring-2"
+                        />
+                        <label htmlFor="useJSON" className="text-saru-cyan text-sm">
+                          Use JSON Login
+                        </label>
+                      </div>
                       <div>
                         <label
                           htmlFor="email"
@@ -146,7 +159,7 @@ export default function PageOne() {
                         type="submit"
                         className="w-full bg-gradient-to-r from-saru-teal to-saru-teal-dark text-saru-cyan px-4 py-2 rounded-lg font-semibold hover:from-saru-teal-dark hover:to-saru-teal transition duration-300"
                       >
-                        Login
+                        Login ({useJSONLogin ? "JSON" : "Form"})
                       </button>
                     </form>
                   </div>

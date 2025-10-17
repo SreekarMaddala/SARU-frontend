@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  // ✅ Updated login for FastAPI (OAuth2PasswordRequestForm)
+  // ✅ Updated login for FastAPI (OAuth2PasswordRequestForm) - Form login
   const login = async (email, password) => {
     try {
       const res = await fetch("http://localhost:8000/company/login", {
@@ -54,6 +54,36 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // JSON login method
+  const loginJSON = async (email, password) => {
+    try {
+      const res = await fetch("http://localhost:8000/company/login-json", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        const token = data.access_token;
+        localStorage.setItem("token", token);
+        setToken(token);
+        setIsAuthenticated(true);
+        return { success: true };
+      } else {
+        const error = await res.json();
+        return { success: false, message: error.detail || "Login failed" };
+      }
+    } catch (error) {
+      return { success: false, message: "Network error" };
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
@@ -64,6 +94,7 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated,
     token,
     login,
+    loginJSON,
     logout,
     loading,
   };

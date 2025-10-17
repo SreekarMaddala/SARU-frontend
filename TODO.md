@@ -1,18 +1,14 @@
-# Admin Dashboard Implementation
+# Company Frontend Login Implementation
 
 ## Plan Overview
-Create a React admin dashboard page for FastAPI backend with login, company management, and protected routes.
+Add minimal examples for both JSON and form login methods to the company frontend.
 
 ## Tasks
-- [ ] Create AdminContext for admin authentication
-- [ ] Create adminApi service for HTTP requests
-- [ ] Create AdminLoginPage component
-- [ ] Create AdminDashboardPage component
-- [ ] Create AdminCompaniesTable component
-- [ ] Create CreateCompanyForm component
-- [ ] Update App.jsx with admin routes
-- [ ] Test admin functionality
+- [x] Update AuthContext.jsx to add loginJSON method for JSON endpoint
+- [x] Update PageOne.jsx to add toggle for choosing login method (JSON or Form)
+- [ ] Test both login methods
 
 ## Current Progress
-- ✅ Axios installed
-- ⏳ Starting implementation...
+- ✅ AuthContext updated with loginJSON method
+- ✅ PageOne updated with checkbox toggle for login method
+- ⏳ Ready for testing
