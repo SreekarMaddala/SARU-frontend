@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from '../contexts/AuthContext';
-import FeedbackTable from './FeedbackTable';
+import FeedbackTable from '../components/FeedbackTable';
 
 export default function Dashboard() {
   const { token } = useAuth();
