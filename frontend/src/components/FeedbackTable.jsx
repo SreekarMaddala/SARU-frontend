@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export default function FeedbackTable({ feedbacks }) {
   return (
@@ -11,7 +11,11 @@ export default function FeedbackTable({ feedbacks }) {
             <th className="py-4 px-6 text-left font-semibold">Channel</th>
             <th className="py-4 px-6 text-left font-semibold">Text</th>
             <th className="py-4 px-6 text-left font-semibold">Sentiment</th>
+            <th className="py-4 px-6 text-left font-semibold">Sentiment Score</th>
             <th className="py-4 px-6 text-left font-semibold">Topics</th>
+            <th className="py-4 px-6 text-left font-semibold">User ID</th>
+            <th className="py-4 px-6 text-left font-semibold">Name</th>
+            <th className="py-4 px-6 text-left font-semibold">Email/Mobile</th>
             <th className="py-4 px-6 text-left font-semibold">Created At</th>
           </tr>
         </thead>
@@ -31,15 +35,19 @@ export default function FeedbackTable({ feedbacks }) {
                   fb.sentiment === 'negative' ? 'bg-red-600 text-white' :
                   'bg-yellow-600 text-white'
                 }`}>
-                  {fb.sentiment}
+                  {fb.sentiment || 'N/A'}
                 </span>
               </td>
+              <td className="py-4 px-6 text-saru-cyan">{fb.sentiment_score ?? 'N/A'}</td>
               <td className="py-4 px-6 text-saru-cyan">{fb.topics}</td>
+              <td className="py-4 px-6 text-saru-cyan">{fb.user_id}</td>
+              <td className="py-4 px-6 text-saru-cyan">{fb.name}</td>
+              <td className="py-4 px-6 text-saru-cyan">{fb.email_or_mobile}</td>
               <td className="py-4 px-6 text-saru-cyan">{new Date(fb.created_at).toLocaleString()}</td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-  )
+  );
 }
