@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import Dashboard from './Dashboard';
+import Dashboard from '../components/Dashboard';
 
 export default function DashboardPage() {
   const { logout } = useAuth();
