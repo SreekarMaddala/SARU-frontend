@@ -21,6 +21,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ------------------------ Header Gradient ------------------------ */
+.header-logo-bg {
+  /* Teal-cyan gradient with #00f7ff included */
+  background: linear-gradient(90deg, #00b8ea 0%, #00f7ff 60%, #01ffff 100%);
+  color: #1a1a2e;
+  padding: 2rem 0;
+  border-bottom: 1px solid #00ffc8;
+}
+
 /* Custom font classes */
 .font-title {
   font-family: "Lato", ui-sans-serif, system-ui, sans-serif;
@@ -43,17 +52,17 @@ th, td {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  line-clamp: 2; /* Standard property for modern browsers */
+  line-clamp: 2;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-height: 2.5em; /* Fallback for browsers that don't support line-clamp */
+  max-height: 2.5em;
 }
 
 /* Buttons */
 button {
   transition: all 0.2s ease-in-out;
-  -webkit-transition: all 0.2s ease-in-out; /* Safari compatibility */
-  -moz-transition: all 0.2s ease-in-out; /* Firefox compatibility */
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
 }
 
 button:disabled {
@@ -63,45 +72,45 @@ button:disabled {
 
 /* File input styling */
 input[type="file"]::file-selector-button {
-  background-color: #4f46e5; /* primary-500 */
+  background-color: #4f46e5;
   color: white;
   border: none;
   border-radius: 0.5rem;
-  -webkit-border-radius: 0.5rem; /* Safari compatibility */
-  -moz-border-radius: 0.5rem; /* Firefox compatibility */
+  -webkit-border-radius: 0.5rem;
+  -moz-border-radius: 0.5rem;
   padding: 0.5rem 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s;
-  -webkit-transition: background-color 0.2s; /* Safari compatibility */
-  -moz-transition: background-color 0.2s; /* Firefox compatibility */
+  -webkit-transition: background-color 0.2s;
+  -moz-transition: background-color 0.2s;
 }
 
 input[type="file"]::file-selector-button:hover {
-  background-color: #4338ca; /* primary-600 */
+  background-color: #00ffea;
 }
 
 /* Loader spinner */
 .animate-spin {
   border-radius: 9999px;
-  -webkit-border-radius: 9999px; /* Safari compatibility */
-  -moz-border-radius: 9999px; /* Firefox compatibility */
+  -webkit-border-radius: 9999px;
+  -moz-border-radius: 9999px;
   border-top-width: 2px;
   border-right-width: 2px;
   border-bottom-width: 2px;
   border-left-width: 2px;
   border-style: solid;
-  border-color: #4f46e5 transparent transparent transparent; /* primary-500 */
+  border-color: #00ffbb transparent transparent transparent;
   animation: spin 1s linear infinite;
-  -webkit-animation: spin 1s linear infinite; /* Safari compatibility */
-  -moz-animation: spin 1s linear infinite; /* Firefox compatibility */
+  -webkit-animation: spin 1s linear infinite;
+  -moz-animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
   to {
     transform: rotate(360deg);
-    -webkit-transform: rotate(360deg); /* Safari compatibility */
-    -moz-transform: rotate(360deg); /* Firefox compatibility */
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
   }
 }
 
@@ -128,7 +137,7 @@ input[type="file"]::file-selector-button:hover {
 }
 
 .border-primary-800 {
-  border-color: #5b21b6;
+  border-color: #00ffc8;
 }
 
 .text-primary-300 {
@@ -136,19 +145,19 @@ input[type="file"]::file-selector-button:hover {
 }
 
 .text-primary-400 {
-  color: #a78bfa;
+  color: #00ffb3;
 }
 
 .bg-primary-600 {
-  background-color: #7c3aed;
+  background-color: #00ffc8;
 }
 
 .bg-primary-700 {
-  background-color: #6d28d9;
+  background-color: #00ffc8;
 }
 
 .hover\:bg-primary-700:hover {
-  background-color: #6d28d9;
+  background-color: #00ffc8;
 }
 
 /* Additional compatibility utilities */
@@ -169,7 +178,7 @@ button:focus,
 input:focus,
 textarea:focus,
 select:focus {
-  outline: 2px solid #4f46e5;
+  outline: 2px solid #00ffc8;
   outline-offset: 2px;
 }
 
