@@ -14,7 +14,7 @@
 body {
   font-family: "Open Sans", ui-sans-serif, system-ui, sans-serif;
   background-color: #0a0a0a;
-  color: #f7f7f7;
+  color: #e6f4f4; /* Changed to light cyan */
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
@@ -23,20 +23,22 @@ body {
 
 /* ------------------------ Header Gradient ------------------------ */
 .header-logo-bg {
-  /* Teal-cyan gradient with #00f7ff included */
-  background: linear-gradient(90deg, #00b8ea 0%, #00f7ff 60%, #01ffff 100%);
-  color: #1a1a2e;
+  /* Modern teal-sky gradient */
+  background: linear-gradient(90deg, #069494 0%, #00ffff 60%, #b2d8d8 100%);
+  color: #008080; /* Classic teal text */
   padding: 2rem 0;
-  border-bottom: 1px solid #00ffc8;
+  border-bottom: 1px solid #66b2b2; /* Soft teal border */
 }
 
 /* Custom font classes */
 .font-title {
   font-family: "Lato", ui-sans-serif, system-ui, sans-serif;
+  color: #00aba9; /* Metro teal */
 }
 
 .font-body {
   font-family: "Open Sans", ui-sans-serif, system-ui, sans-serif;
+  color: #e6f4f4; /* Light cyan */
 }
 
 /* Table & Feedback styling */
@@ -48,6 +50,7 @@ th, td {
   text-align: left;
 }
 
+/* Text clamp */
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -60,9 +63,17 @@ th, td {
 
 /* Buttons */
 button {
+  background-color: #00aba9; /* Metro teal */
+  color: #e6f4f4;           /* Light cyan */
+  border: none;
   transition: all 0.2s ease-in-out;
   -webkit-transition: all 0.2s ease-in-out;
   -moz-transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #066666; /* Darker teal on hover */
 }
 
 button:disabled {
@@ -72,35 +83,29 @@ button:disabled {
 
 /* File input styling */
 input[type="file"]::file-selector-button {
-  background-color: #4f46e5;
-  color: white;
+  background-color: #00aba9;
+  color: #e6f4f4;
   border: none;
   border-radius: 0.5rem;
-  -webkit-border-radius: 0.5rem;
-  -moz-border-radius: 0.5rem;
   padding: 0.5rem 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s;
-  -webkit-transition: background-color 0.2s;
-  -moz-transition: background-color 0.2s;
 }
 
 input[type="file"]::file-selector-button:hover {
-  background-color: #00ffea;
+  background-color: #66b2b2;
 }
 
 /* Loader spinner */
 .animate-spin {
   border-radius: 9999px;
-  -webkit-border-radius: 9999px;
-  -moz-border-radius: 9999px;
   border-top-width: 2px;
   border-right-width: 2px;
   border-bottom-width: 2px;
   border-left-width: 2px;
   border-style: solid;
-  border-color: #00ffbb transparent transparent transparent;
+  border-color: #66b2b2 transparent transparent transparent; /* Soft teal */
   animation: spin 1s linear infinite;
   -webkit-animation: spin 1s linear infinite;
   -moz-animation: spin 1s linear infinite;
@@ -109,20 +114,6 @@ input[type="file"]::file-selector-button:hover {
 @keyframes spin {
   to {
     transform: rotate(360deg);
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-  }
-}
-
-@-webkit-keyframes spin {
-  to {
-    -webkit-transform: rotate(360deg);
-  }
-}
-
-@-moz-keyframes spin {
-  to {
-    -moz-transform: rotate(360deg);
   }
 }
 
@@ -132,33 +123,35 @@ input[type="file"]::file-selector-button:hover {
 }
 
 /* Custom card background & border */
+/*
 .bg-neutral-900 {
-  background-color: #1a1a2e;
+  background-color: #008080;
 }
 
 .border-primary-800 {
-  border-color: #00ffc8;
+  border-color: #66b2b2;
 }
 
 .text-primary-300 {
-  color: #c4b5fd;
+  color: #b2d8d8;
 }
 
 .text-primary-400 {
-  color: #00ffb3;
+  color: #00ffff;
 }
 
 .bg-primary-600 {
-  background-color: #00ffc8;
+  background-color: #66b2b2;
 }
 
 .bg-primary-700 {
-  background-color: #00ffc8;
+  background-color: #00aba9;
 }
 
 .hover\:bg-primary-700:hover {
-  background-color: #00ffc8;
+  background-color: #008080;
 }
+*/
 
 /* Additional compatibility utilities */
 * {
@@ -178,7 +171,7 @@ button:focus,
 input:focus,
 textarea:focus,
 select:focus {
-  outline: 2px solid #00ffc8;
+  outline: 2px solid #66b2b2;
   outline-offset: 2px;
 }
 
