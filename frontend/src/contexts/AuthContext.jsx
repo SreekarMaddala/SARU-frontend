@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
       if (res.ok) {
         const data = await res.json();
         const token = data.access_token;
-        localStorage.setItem("token", token);
+        localStorage.setItem("companyToken", token);
         setToken(token);
         setIsAuthenticated(true);
         return { success: true };

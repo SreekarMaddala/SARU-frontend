@@ -11,4 +11,5 @@ Add minimal examples for both JSON and form login methods to the company fronten
 ## Current Progress
 - ✅ AuthContext updated with loginJSON method
 - ✅ PageOne updated with checkbox toggle for login method
+- ✅ Fixed localStorage key inconsistency in loginJSON method
 - ⏳ Ready for testing
