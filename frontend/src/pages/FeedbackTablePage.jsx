@@ -53,6 +53,12 @@ export default function FeedbackTablePage() {
             >
               Customer Data
             </Link>
+            <Link
+              to="/products"
+              className="text-gray-700 hover:text-blue-600 transition-colors"
+            >
+              Products
+            </Link>
             <a
               href="#"
               className="text-gray-700 hover:text-blue-600 transition-colors"

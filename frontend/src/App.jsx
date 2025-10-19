@@ -5,6 +5,7 @@ import PageOne from './pages/PageOne';
 import FeedbackTablePage from './pages/FeedbackTablePage';
 import DashboardPage from './pages/DashboardPage';
 import CustomerDataPage from './pages/CustomerDataPage';
+import ProductsPage from './pages/ProductsPage';
 import PricingPage from './pages/PricingPage';
 import CareersPage from './pages/CareersPage';
 import SolutionsPage from './pages/SolutionsPage';
@@ -60,6 +61,14 @@ function App() {
           element={
             <ProtectedRoute>
               <CustomerDataPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/products"
+          element={
+            <ProtectedRoute>
+              <ProductsPage />
             </ProtectedRoute>
           }
         />

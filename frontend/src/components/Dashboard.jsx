@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import { getProducts, createProduct } from "../services/productApi";
 
 // ✅ Tailwind + Fonts + Icons Imports (global)
 import "../index.css"; // see below for inline contents
@@ -53,6 +54,10 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [nextTwitterFetch, setNextTwitterFetch] = useState(null);
   const [countdown, setCountdown] = useState("");
+  const [products, setProducts] = useState([]);
+  const [newProductName, setNewProductName] = useState("");
+  const [newProductDescription, setNewProductDescription] = useState("");
+  const [creatingProduct, setCreatingProduct] = useState(false);
 
   const loadFeedbacks = async () => {
     setLoading(true);
@@ -69,8 +74,18 @@ export default function Dashboard() {
     setLoading(false);
   };
 
+  const loadProducts = async () => {
+    try {
+      const data = await getProducts();
+      setProducts(data);
+    } catch (error) {
+      console.error("Error loading products:", error);
+    }
+  };
+
   useEffect(() => {
     loadFeedbacks();
+    loadProducts();
   }, []);
 
   useEffect(() => {
@@ -166,11 +181,73 @@ export default function Dashboard() {
     setLoading(false);
   };
 
+  const handleCreateProduct = async () => {
+    if (!newProductName.trim()) return alert("Enter a product name.");
+    setCreatingProduct(true);
+    try {
+      await createProduct({
+        name: newProductName.trim(),
+        description: newProductDescription.trim(),
+      });
+      setNewProductName("");
+      setNewProductDescription("");
+      await loadProducts();
+      alert("Product created successfully!");
+    } catch (error) {
+      console.error("Error creating product:", error);
+      alert("Failed to create product");
+    }
+    setCreatingProduct(false);
+  };
+
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-100 font-body p-8 space-y-12">
       <h1 className="text-5xl font-title font-bold text-primary-400 mb-8">
         Varshitha Feedback Dashboard
       </h1>
+
+      {/* Products Section */}
+      <div className="bg-neutral-900 rounded-xl p-6 shadow-lg border border-primary-800">
+        <h2 className="text-2xl font-title text-primary-300 mb-4">Products</h2>
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input
+              type="text"
+              placeholder="Product Name"
+              value={newProductName}
+              onChange={(e) => setNewProductName(e.target.value)}
+              className="w-full bg-neutral-800 text-neutral-100 border border-neutral-700 rounded-lg px-4 py-2 focus:border-primary-500 focus:outline-none"
+            />
+            <input
+              type="text"
+              placeholder="Product Description (optional)"
+              value={newProductDescription}
+              onChange={(e) => setNewProductDescription(e.target.value)}
+              className="w-full bg-neutral-800 text-neutral-100 border border-neutral-700 rounded-lg px-4 py-2 focus:border-primary-500 focus:outline-none"
+            />
+          </div>
+          <button
+            onClick={handleCreateProduct}
+            disabled={creatingProduct}
+            className="w-full bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-700 transition disabled:bg-neutral-700"
+          >
+            {creatingProduct ? "Creating..." : "Create Product"}
+          </button>
+        </div>
+        <div className="mt-6">
+          <h3 className="text-lg font-semibold text-primary-300 mb-2">Existing Products</h3>
+          <div className="space-y-2 max-h-40 overflow-y-auto">
+            {products.map((product) => (
+              <div key={product.id} className="bg-neutral-800 p-3 rounded-lg">
+                <div className="font-semibold text-primary-300">{product.name}</div>
+                {product.description && (
+                  <div className="text-sm text-neutral-400">{product.description}</div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* Import Options */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
