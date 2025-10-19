@@ -10,6 +10,7 @@ export default function FeedbackTable({ feedbacks }) {
             <th className="py-4 px-6 text-left font-semibold">Company ID</th>
             <th className="py-4 px-6 text-left font-semibold">Channel</th>
             <th className="py-4 px-6 text-left font-semibold">Text</th>
+            <th className="py-4 px-6 text-left font-semibold">Product</th>
             <th className="py-4 px-6 text-left font-semibold">Sentiment</th>
             <th className="py-4 px-6 text-left font-semibold">Sentiment Score</th>
             <th className="py-4 px-6 text-left font-semibold">Topics</th>
@@ -29,6 +30,7 @@ export default function FeedbackTable({ feedbacks }) {
               <td className="py-4 px-6 text-saru-cyan">{fb.company_id}</td>
               <td className="py-4 px-6 text-saru-cyan">{fb.channel}</td>
               <td className="py-4 px-6 text-saru-cyan max-w-xs truncate" title={fb.text}>{fb.text}</td>
+              <td className="py-4 px-6 text-saru-cyan">{fb.product_name || 'N/A'}</td>
               <td className="py-4 px-6">
                 <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
                   fb.sentiment === 'positive' ? 'bg-green-600 text-white' :

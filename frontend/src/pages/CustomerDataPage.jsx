@@ -60,6 +60,12 @@ export default function CustomerDataPage() {
             <span className="text-blue-600 font-semibold border-b-2 border-blue-600">
               Customer Data
             </span>
+            <Link
+              to="/products"
+              className="text-gray-700 hover:text-blue-600 transition-colors"
+            >
+              Products
+            </Link>
             <a
               href="#"
               className="text-gray-700 hover:text-blue-600 transition-colors"

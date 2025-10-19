@@ -12,7 +12,7 @@ function FeedbackTable({ feedbacks }) {
       <table className="min-w-full divide-y divide-neutral-700">
         <thead>
           <tr>
-            {["ID", "Channel", "Feedback", "Created At"].map((head) => (
+            {["ID", "Channel", "Feedback", "Product", "Created At"].map((head) => (
               <th
                 key={head}
                 className="px-6 py-3 text-left text-xs font-medium text-primary-400 uppercase tracking-wider"
@@ -33,6 +33,7 @@ function FeedbackTable({ feedbacks }) {
               >
                 {fb.text}
               </td>
+              <td className="px-6 py-4 whitespace-nowrap text-primary-300">{fb.product_name || 'N/A'}</td>
               <td className="px-6 py-4 whitespace-nowrap text-primary-300">
                 {new Date(fb.created_at).toLocaleString()}
               </td>
@@ -107,6 +108,26 @@ export default function Dashboard() {
   }, [nextTwitterFetch]);
 
   const handleUploadCSV = async () => {
+    if (!file) return alert("Select a file first.");
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("http://localhost:8000/feedback/upload_csv", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+      const data = await res.json();
+      alert(`Inserted ${data.inserted} feedbacks`);
+      await loadFeedbacks();
+    } catch {
+      alert("CSV upload failed");
+    }
+    setLoading(false);
+  };
+
+  const handleUploadCSVWithProduct = async () => {
     if (!file) return alert("Select a file first.");
     setLoading(true);
     try {
