@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { getUsers } from "../services/usersApi";
 
 export default function CustomerDataPage() {
-  const { token } = useAuth();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,13 +10,7 @@ export default function CustomerDataPage() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch("http://localhost:8000/users/", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!res.ok) {
-          throw new Error("Failed to fetch user data");
-        }
-        const data = await res.json();
+        const data = await getUsers();
         setUsers(data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -27,7 +20,7 @@ export default function CustomerDataPage() {
       }
     };
     fetchUsers();
-  }, [token]);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
