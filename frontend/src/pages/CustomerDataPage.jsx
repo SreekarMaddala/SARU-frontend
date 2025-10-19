@@ -1,16 +1,24 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getUsers } from "../services/usersApi";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function CustomerDataPage() {
+  const { token } = useAuth();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
+      if (!token) {
+        setError("Please login to view customer data");
+        setLoading(false);
+        return;
+      }
+      
       try {
-        const data = await getUsers();
+        const data = await getUsers(token);
         setUsers(data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -20,7 +28,7 @@ export default function CustomerDataPage() {
       }
     };
     fetchUsers();
-  }, []);
+  }, [token]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -125,7 +133,7 @@ export default function CustomerDataPage() {
                         {user.email}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {new Date(user.created_at).toLocaleDateString()}
+                        {user.created_at ? new Date(user.created_at).toLocaleDateString() : "N/A"}
                       </td>
                     </tr>
                   ))}
