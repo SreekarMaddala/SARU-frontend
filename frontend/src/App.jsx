@@ -4,6 +4,7 @@ import { AdminProvider, useAdmin } from './contexts/AdminContext';
 import PageOne from './pages/PageOne';
 import FeedbackTablePage from './pages/FeedbackTablePage';
 import DashboardPage from './pages/DashboardPage';
+import CustomerDataPage from './pages/CustomerDataPage';
 import PricingPage from './pages/PricingPage';
 import CareersPage from './pages/CareersPage';
 import SolutionsPage from './pages/SolutionsPage';
@@ -51,6 +52,14 @@ function App() {
           element={
             <ProtectedRoute>
               <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/customer-data"
+          element={
+            <ProtectedRoute>
+              <CustomerDataPage />
             </ProtectedRoute>
           }
         />

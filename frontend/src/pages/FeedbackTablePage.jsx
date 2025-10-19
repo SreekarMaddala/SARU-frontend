@@ -47,6 +47,12 @@ export default function FeedbackTablePage() {
             <span className="text-blue-600 font-semibold border-b-2 border-blue-600">
               Feedback Table
             </span>
+            <Link
+              to="/customer-data"
+              className="text-gray-700 hover:text-blue-600 transition-colors"
+            >
+              Customer Data
+            </Link>
             <a
               href="#"
               className="text-gray-700 hover:text-blue-600 transition-colors"

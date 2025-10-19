@@ -30,6 +30,10 @@ export default function DashboardPage() {
               Feedback Table
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-saru-teal transition-all duration-300 hover:w-full"></span>
             </Link>
+            <Link to="/customer-data" className="text-saru-cyan hover:text-saru-teal transition duration-300 relative">
+              Customer Data
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-saru-teal transition-all duration-300 hover:w-full"></span>
+            </Link>
             <a href="#" className="text-saru-cyan hover:text-saru-teal transition duration-300 relative">
               About
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-saru-teal transition-all duration-300 hover:w-full"></span>
