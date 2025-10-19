@@ -1,12 +1,12 @@
 import axios from "axios";
 
-// Create axios instance for product API
-const productApi = axios.create({
+// Create axios instance for users API
+const usersApi = axios.create({
   baseURL: "http://localhost:8000",
 });
 
 // Request interceptor to add JWT token
-productApi.interceptors.request.use(
+usersApi.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("companyToken");
     if (token) {
@@ -20,7 +20,7 @@ productApi.interceptors.request.use(
 );
 
 // Response interceptor to handle token expiration
-productApi.interceptors.response.use(
+usersApi.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
@@ -32,25 +32,25 @@ productApi.interceptors.response.use(
   }
 );
 
-// Product API functions
-export const getProducts = async () => {
-  const response = await productApi.get("/products/");
+// Users API functions
+export const getUsers = async () => {
+  const response = await usersApi.get("/users/");
   return response.data;
 };
 
-export const createProduct = async (productData) => {
-  const response = await productApi.post("/products", productData);
+export const createUser = async (userData) => {
+  const response = await usersApi.post("/users/", userData);
   return response.data;
 };
 
-export const updateProduct = async (productId, productData) => {
-  const response = await productApi.put(`/products/${productId}`, productData);
+export const updateUser = async (userId, userData) => {
+  const response = await usersApi.put(`/users/${userId}/`, userData);
   return response.data;
 };
 
-export const deleteProduct = async (productId) => {
-  const response = await productApi.delete(`/products/${productId}`);
+export const deleteUser = async (userId) => {
+  const response = await usersApi.delete(`/users/${userId}/`);
   return response.data;
 };
 
-export default productApi;
+export default usersApi;

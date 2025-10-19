@@ -1,4 +1,4 @@
-dimport { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -11,7 +11,7 @@ export default function CustomerDataPage() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch("http://localhost:8000/users", {
+        const res = await fetch("http://localhost:8000/users/", {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) {
