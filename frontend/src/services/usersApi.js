@@ -54,3 +54,4 @@ export const deleteUser = async (userId) => {
 };
 
 export default usersApi;
+
