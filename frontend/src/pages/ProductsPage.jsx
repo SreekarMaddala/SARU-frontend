@@ -215,7 +215,7 @@ export default function ProductsPage() {
             </div>
           )}
 
-          {/* Products List */}
+          {/* Products Table */}
           <div className="bg-saru-slate rounded-xl shadow-2xl p-6">
             {loading ? (
               <div className="text-center py-12">
@@ -231,29 +231,62 @@ export default function ProductsPage() {
                 <p className="text-saru-cyan/60">No products found. Create your first product!</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {products.map((product) => (
-                  <div key={product.id} className="bg-saru-slate-dark p-6 rounded-lg border border-saru-cyan/20">
-                    <h3 className="text-xl font-semibold text-saru-cyan mb-2">{product.name}</h3>
-                    {product.description && (
-                      <p className="text-saru-cyan/70 mb-4">{product.description}</p>
-                    )}
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => startEdit(product)}
-                        className="flex-1 bg-saru-teal text-saru-black px-4 py-2 rounded-lg font-semibold hover:bg-saru-cyan transition duration-300"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(product.id)}
-                        className="flex-1 bg-red-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-700 transition duration-300"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                ))}
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-saru-cyan/20">
+                  <thead className="bg-saru-slate-dark">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-saru-cyan uppercase tracking-wider">
+                        #
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-saru-cyan uppercase tracking-wider">
+                        ID
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-saru-cyan uppercase tracking-wider">
+                        Name
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-saru-cyan uppercase tracking-wider">
+                        Description
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-saru-cyan uppercase tracking-wider">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-saru-slate divide-y divide-saru-cyan/10">
+                    {products.map((product, index) => (
+                      <tr key={product.id}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-saru-cyan">
+                          {index + 1}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-saru-cyan/70">
+                          {product.id}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-saru-cyan">
+                          {product.name}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-saru-cyan/70">
+                          {product.description || "N/A"}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                          <div className="flex space-x-2">
+                            <button
+                              onClick={() => startEdit(product)}
+                              className="bg-saru-teal text-saru-black px-3 py-1 rounded-lg font-semibold hover:bg-saru-cyan transition duration-300 text-xs"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              onClick={() => handleDelete(product.id)}
+                              className="bg-red-600 text-white px-3 py-1 rounded-lg font-semibold hover:bg-red-700 transition duration-300 text-xs"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             )}
           </div>
