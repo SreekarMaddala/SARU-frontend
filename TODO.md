@@ -2,5 +2,5 @@
 - [x] Restructure inner divs for 4 equal areas: Top-left (Heading + Text + Buttons), Top-right (Stats Card), Bottom-left (Two circular images: kavya and msk), Bottom-right (Two circular images: ntr and tekkali)
 - [x] Update image sources to correct paths
 - [x] Remove responsive order classes
-- [x] Adjust size of photos to equal (w-[120px] h-[120px]) and remove borders
+- [x] Adjust size of photos to equal (w-[240px] h-[240px]) and remove borders
 - [ ] Test the layout by running the development server

@@ -49,9 +49,9 @@ export default function PageOne() {
             <img
               src="/logo - Copy.png"
               alt="Logo"
-              className="h-16 w-12 transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
+              className="h-16 w-20 transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
             />
-            <img src="/text.png" alt="SARU text" className="ml-6 h-8" />
+            <img src="/text.png" alt="SARU text" className="ml-6 h-10 transition-transform duration-500 group-hover:scale-105" />
           </div>
 
           {/* Nav links */}
@@ -219,14 +219,14 @@ export default function PageOne() {
     {/* 3️⃣ GRID (Bottom Left) — Two Circular Images */}
     <div className="flex justify-center items-center gap-8">
       <img
-        src="/kavya-removebg-preview.png"
-        alt="Kavya Visual"
-        className="w-[120px] h-[120px] rounded-full object-cover shadow-2xl hover:scale-105 transition-transform duration-500"
-      />
-      <img
         src="/msk-removebg-preview.png"
         alt="MSK Visual"
-        className="w-[120px] h-[120px] rounded-full object-cover shadow-2xl hover:scale-105 transition-transform duration-500"
+        className="w-[240px] h-[240px] rounded-full object-cover shadow-2xl hover:scale-105 transition-transform duration-500"
+      />
+      <img
+        src="/kavya-removebg-preview.png"
+        alt="Kavya Visual"
+        className="w-[240px] h-[240px] rounded-full object-cover shadow-2xl hover:scale-105 transition-transform duration-500"
       />
     </div>
 
@@ -235,12 +235,12 @@ export default function PageOne() {
       <img
         src="/ntr-removebg-preview.png"
         alt="NTR Visual"
-        className="w-[120px] h-[120px] rounded-full object-cover shadow-2xl hover:scale-105 transition-transform duration-500"
+        className="w-[240px] h-[240px] rounded-full object-cover shadow-2xl hover:scale-105 transition-transform duration-500"
       />
       <img
         src="/tekkali-removebg-preview.png"
         alt="Tekkali Visual"
-        className="w-[120px] h-[120px] rounded-full object-cover shadow-2xl hover:scale-105 transition-transform duration-500"
+        className="w-[240px] h-[240px] rounded-full object-cover shadow-2xl hover:scale-105 transition-transform duration-500"
       />
     </div>
 
