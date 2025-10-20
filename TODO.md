@@ -1,12 +1,6 @@
-# TODO: Modify ProductsPage to display customer data with numbering
-
-- [x] Change imports to use getUsers from usersApi
-- [x] Update state variables to handle users instead of products
-- [x] Modify load function to fetch users data
-- [x] Change display from grid cards to table format
-- [x] Add numbering column (#) starting from 1
-- [x] Update table columns to match customer data: ID, Name, Email, Created At
-- [x] Remove CRUD operations (create, edit, delete buttons and modals)
-- [x] Remove "Add Product" button
-- [x] Update page title if necessary
-- [x] Revert back to products as per user request
+- [x] Update Hero Section container to 2x2 grid layout
+- [x] Restructure inner divs for 4 equal areas: Top-left (Heading + Text + Buttons), Top-right (Stats Card), Bottom-left (Two circular images: kavya and msk), Bottom-right (Two circular images: ntr and tekkali)
+- [x] Update image sources to correct paths
+- [x] Remove responsive order classes
+- [x] Adjust size of photos to equal (w-[120px] h-[120px]) and remove borders
+- [ ] Test the layout by running the development server
