@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
-import StatCard from "../components/StatCard";
 
 export default function PageOne() {
   const { isAuthenticated, login, loginJSON, logout, loading } = useAuth();
@@ -38,14 +37,6 @@ export default function PageOne() {
         Loading...
       </div>
     );
-
-  // Dynamic stats data
-  const statsData = [
-    { image: "/green1.png", label: "Customer Loyalty", value: "+25%", status: "↑ Improved" },
-    { image: "/green2.png", label: "Feedbacks", value: "12,430", status: "+15% MoM" },
-    { image: "/green3.png", label: "NPS Score", value: "68", status: "↑ Strong" },
-    { image: "/green4.png", label: "Positivity %", value: "72%", status: "↑ Healthy" },
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-950 via-saru-slate-dark to-black text-saru-cyan">
@@ -100,9 +91,12 @@ export default function PageOne() {
                   Login
                 </button>
 
+                {/* Login dropdown */}
                 {showLogin && (
                   <div className="absolute top-full right-0 mt-3 w-80 bg-saru-slate border border-saru-cyan/30 rounded-xl p-6 shadow-2xl animate-fadeIn backdrop-blur-md">
-                    <h3 className="text-xl font-semibold text-saru-cyan mb-4">Login to SARU</h3>
+                    <h3 className="text-xl font-semibold text-saru-cyan mb-4">
+                      Login to SARU
+                    </h3>
                     <form onSubmit={handleLogin} className="space-y-4">
                       <div className="flex items-center space-x-2">
                         <input
@@ -112,10 +106,14 @@ export default function PageOne() {
                           onChange={(e) => setUseJSONLogin(e.target.checked)}
                           className="w-4 h-4 text-saru-teal bg-saru-slate-dark border border-saru-cyan/30 rounded focus:ring-saru-teal"
                         />
-                        <label htmlFor="useJSON" className="text-sm text-saru-cyan/80">Use JSON Login</label>
+                        <label htmlFor="useJSON" className="text-sm text-saru-cyan/80">
+                          Use JSON Login
+                        </label>
                       </div>
                       <div>
-                        <label htmlFor="email" className="block text-sm text-saru-cyan/80 mb-1">Email</label>
+                        <label htmlFor="email" className="block text-sm text-saru-cyan/80 mb-1">
+                          Email
+                        </label>
                         <input
                           id="email"
                           type="email"
@@ -125,7 +123,9 @@ export default function PageOne() {
                         />
                       </div>
                       <div>
-                        <label htmlFor="password" className="block text-sm text-saru-cyan/80 mb-1">Password</label>
+                        <label htmlFor="password" className="block text-sm text-saru-cyan/80 mb-1">
+                          Password
+                        </label>
                         <input
                           id="password"
                           type="password"
@@ -185,17 +185,30 @@ export default function PageOne() {
             )}
           </div>
 
-          {/* Stats Cards Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
-            {statsData.map((stat, index) => (
-              <StatCard
-                key={index}
-                image={stat.image}
-                label={stat.label}
-                value={stat.value}
-                status={stat.status}
-              />
-            ))}
+          {/* Stats Card */}
+          <div className="relative">
+            <div className="bg-saru-slate rounded-2xl p-10 shadow-2xl border border-saru-teal/30 relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-br from-saru-cyan/10 via-saru-teal/20 to-transparent blur-2xl animate-pulse"></div>
+              <div className="relative z-10 space-y-6">
+                <div className="bg-gradient-to-r from-saru-cyan via-saru-teal to-saru-teal-dark h-4 rounded-full animate-pulse"></div>
+                <div className="grid grid-cols-3 gap-4 mt-8">
+                  {[
+                    { label: "Feedbacks", value: "12,430", status: "+15% MoM" },
+                    { label: "NPS Score", value: "68", status: "↑ Strong" },
+                    { label: "Positivity %", value: "72%", status: "↑ Healthy" },
+                  ].map((stat, i) => (
+                    <div
+                      key={i}
+                      className="p-4 rounded-xl bg-saru-slate-dark border border-saru-teal/30 shadow-md hover:shadow-saru-cyan/30 transition transform hover:scale-105"
+                    >
+                      <p className="text-saru-teal-light text-xs">{stat.label}</p>
+                      <h3 className="text-white font-bold text-lg">{stat.value}</h3>
+                      <span className="text-saru-cyan text-xs">{stat.status}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -207,5 +220,4 @@ export default function PageOne() {
         </div>
       </footer>
     </div>
-  );
-}
+  );}
