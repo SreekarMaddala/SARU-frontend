@@ -126,17 +126,13 @@ export default function FeedbackTablePage() {
       </nav>
 
       {/* ==============================
-          MAIN CONTENT
+          MAIN CONTENT - Adjusted padding and removed header
       ============================== */}
-      <main className="max-w-7xl mx-auto px-6 py-10">
-        <header className="mb-10 text-center md:text-left">
-          <h1 className="text-4xl font-extrabold text-gray-800 flex items-center justify-center md:justify-start">
-            📋 Feedback Table
-          </h1>
-          <p className="mt-2 text-gray-600 text-sm md:text-base">
-            Review and analyze all customer feedback in one place.
-          </p>
-        </header>
+      {/* Adjusted `px-6` to responsive `px-4 sm:px-6` for better 
+        mobile screen utilization to fit the table.
+      */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+        {/* Removed the <header> tag and its contents */}
 
         {errorMsg && (
           <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl mb-6 text-center md:text-left">
@@ -144,7 +140,7 @@ export default function FeedbackTablePage() {
           </div>
         )}
 
-        {/* Feedback Table Section */}
+        {/* Feedback Table Section - uses overflow-x-auto to ensure scrollability */}
         <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
           {loading ? (
             <p className="text-gray-500 text-center py-8 animate-pulse">
