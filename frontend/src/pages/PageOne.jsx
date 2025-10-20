@@ -33,63 +33,51 @@ export default function PageOne() {
 
   if (loading)
     return (
-      <div className="min-h-screen flex items-center justify-center bg-saru-black text-saru-cyan">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-saru-slate-dark to-black text-saru-cyan animate-pulse">
         Loading...
       </div>
     );
 
   return (
-    <div className="min-h-screen bg-saru-black">
-      {/* Navigation with Login */}
-      <nav className="sticky top-0 z-50 bg-gradient-to-r from-saru-cyan via-saru-teal to-saru-teal-dark border-b border-saru-cyan/60 backdrop-blur-md shadow-lg">
-        <div className="flex justify-between items-center px-8 py-3">
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-saru-slate-dark to-black text-saru-cyan">
+      {/* Navbar */}
+      <nav className="sticky top-0 z-50 bg-gradient-to-r from-saru-cyan via-saru-teal to-saru-teal-dark border-b border-saru-cyan/50 shadow-lg backdrop-blur-lg">
+        <div className="flex justify-between items-center px-8 py-4">
           <div className="flex items-center space-x-4 group">
             <img
               src="/logo - Copy.png"
               alt="Logo"
-              className="h-20 w-14 transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
+              className="h-16 w-12 transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
             />
-            <img src="/text.png" alt="SARU text" className="ml-8 h-10" />
+            <img src="/text.png" alt="SARU text" className="ml-6 h-8" />
           </div>
-          <div className="flex items-center space-x-6">
-            <Link
-              to="/pricing"
-              className="text-saru-cyan hover:text-saru-teal transition duration-300"
-            >
+
+          {/* Nav links */}
+          <div className="hidden md:flex items-center space-x-6 font-medium">
+            <Link to="/pricing" className="hover:text-white transition duration-300">
               Pricing
             </Link>
-            {/* ✅ Fixed Solutions link */}
-            <Link
-              to="/solutions"
-              className="text-saru-cyan hover:text-saru-teal transition duration-300"
-            >
+            <Link to="/solutions" className="hover:text-white transition duration-300">
               Solutions
             </Link>
-            <Link
-              to="/careers"
-              className="text-saru-cyan hover:text-saru-teal transition duration-300"
-            >
+            <Link to="/careers" className="hover:text-white transition duration-300">
               Careers
             </Link>
           </div>
+
+          {/* Auth Section */}
           <div className="flex items-center space-x-4">
             {isAuthenticated ? (
               <>
-                <Link
-                  to="/dashboard"
-                  className="text-saru-cyan hover:text-saru-teal transition duration-300"
-                >
+                <Link to="/dashboard" className="hover:text-white transition duration-300">
                   Dashboard
                 </Link>
-                <Link
-                  to="/feedback-table"
-                  className="text-saru-cyan hover:text-saru-teal transition duration-300"
-                >
-                  Feedback Table
+                <Link to="/feedback-table" className="hover:text-white transition duration-300">
+                  Feedback
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300"
+                  className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 shadow-md transition"
                 >
                   Logout
                 </button>
@@ -98,12 +86,14 @@ export default function PageOne() {
               <div className="relative">
                 <button
                   onClick={() => setShowLogin(!showLogin)}
-                  className="bg-gradient-to-r from-saru-teal to-saru-teal-dark text-saru-cyan px-6 py-3 rounded-xl font-semibold hover:from-saru-teal-dark hover:to-saru-teal transition duration-300"
+                  className="bg-gradient-to-r from-saru-teal to-saru-teal-dark text-saru-black font-semibold px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-300"
                 >
                   Login
                 </button>
+
+                {/* Login dropdown */}
                 {showLogin && (
-                  <div className="absolute top-full right-0 mt-2 w-80 bg-saru-slate rounded-xl p-6 shadow-lg border border-saru-teal/30">
+                  <div className="absolute top-full right-0 mt-3 w-80 bg-saru-slate border border-saru-cyan/30 rounded-xl p-6 shadow-2xl animate-fadeIn backdrop-blur-md">
                     <h3 className="text-xl font-semibold text-saru-cyan mb-4">
                       Login to SARU
                     </h3>
@@ -114,17 +104,14 @@ export default function PageOne() {
                           type="checkbox"
                           checked={useJSONLogin}
                           onChange={(e) => setUseJSONLogin(e.target.checked)}
-                          className="w-4 h-4 text-saru-teal bg-saru-slate-dark border border-saru-teal/30 rounded focus:ring-saru-teal focus:ring-2"
+                          className="w-4 h-4 text-saru-teal bg-saru-slate-dark border border-saru-cyan/30 rounded focus:ring-saru-teal"
                         />
-                        <label htmlFor="useJSON" className="text-saru-cyan text-sm">
+                        <label htmlFor="useJSON" className="text-sm text-saru-cyan/80">
                           Use JSON Login
                         </label>
                       </div>
                       <div>
-                        <label
-                          htmlFor="email"
-                          className="block text-saru-cyan mb-1 text-sm"
-                        >
+                        <label htmlFor="email" className="block text-sm text-saru-cyan/80 mb-1">
                           Email
                         </label>
                         <input
@@ -132,15 +119,11 @@ export default function PageOne() {
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="w-full bg-saru-slate-dark text-saru-cyan border border-saru-teal/30 rounded-lg px-3 py-2 focus:border-saru-teal focus:outline-none"
-                          required
+                          className="w-full bg-saru-slate-dark text-saru-cyan border border-saru-teal/30 rounded-lg px-3 py-2 focus:outline-none focus:border-saru-teal"
                         />
                       </div>
                       <div>
-                        <label
-                          htmlFor="password"
-                          className="block text-saru-cyan mb-1 text-sm"
-                        >
+                        <label htmlFor="password" className="block text-sm text-saru-cyan/80 mb-1">
                           Password
                         </label>
                         <input
@@ -148,16 +131,13 @@ export default function PageOne() {
                           type="password"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          className="w-full bg-saru-slate-dark text-saru-cyan border border-saru-teal/30 rounded-lg px-3 py-2 focus:border-saru-teal focus:outline-none"
-                          required
+                          className="w-full bg-saru-slate-dark text-saru-cyan border border-saru-teal/30 rounded-lg px-3 py-2 focus:outline-none focus:border-saru-teal"
                         />
                       </div>
-                      {error && (
-                        <p className="text-red-500 text-sm">{error}</p>
-                      )}
+                      {error && <p className="text-red-500 text-sm">{error}</p>}
                       <button
                         type="submit"
-                        className="w-full bg-gradient-to-r from-saru-teal to-saru-teal-dark text-saru-cyan px-4 py-2 rounded-lg font-semibold hover:from-saru-teal-dark hover:to-saru-teal transition duration-300"
+                        className="w-full bg-gradient-to-r from-saru-teal to-saru-teal-dark text-saru-black font-semibold px-4 py-2 rounded-lg hover:shadow-lg transition"
                       >
                         Login ({useJSONLogin ? "JSON" : "Form"})
                       </button>
@@ -171,66 +151,61 @@ export default function PageOne() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center">
-        <div className="container mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Text */}
-          <div>
-            <h2 className="text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-saru-cyan via-saru-teal to-saru-teal-dark mb-6 leading-tight drop-shadow-lg">
+      <section className="min-h-screen flex items-center px-8">
+        <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Text Section */}
+          <div className="space-y-8">
+            <h1 className="text-6xl font-extrabold bg-gradient-to-r from-saru-cyan via-saru-teal to-saru-teal-dark text-transparent bg-clip-text leading-tight drop-shadow-lg">
               Soar with Insights 🦅
-            </h2>
-            <p className="text-xl text-saru-cyan/80 mb-8">
-              Harness eagle-eyed vision to capture, analyze, and act on
-              feedback—elevating your strategies above the competition.
+            </h1>
+            <p className="text-lg text-saru-cyan/70 max-w-lg">
+              Harness eagle-eyed vision to capture, analyze, and act on feedback —
+              elevating your strategies above the competition.
             </p>
+
             {isAuthenticated ? (
-              <div className="space-x-4">
+              <div className="flex space-x-4">
                 <Link
                   to="/dashboard"
-                  className="bg-gradient-to-r from-saru-teal to-saru-teal-dark text-saru-black px-8 py-4 rounded-xl font-semibold hover:from-saru-teal-dark hover:to-saru-teal transition duration-300 shadow-lg"
+                  className="bg-gradient-to-r from-saru-teal to-saru-teal-dark text-saru-black font-semibold px-8 py-4 rounded-xl shadow-lg hover:from-saru-teal-dark hover:to-saru-teal transition"
                 >
-                  Go to Dashboard
+                  Dashboard
                 </Link>
                 <Link
                   to="/feedback-table"
-                  className="border-2 border-saru-cyan text-saru-cyan px-8 py-4 rounded-xl font-semibold hover:bg-saru-cyan hover:text-saru-black transition duration-300 shadow-lg"
+                  className="border-2 border-saru-cyan text-saru-cyan font-semibold px-8 py-4 rounded-xl hover:bg-saru-cyan hover:text-saru-black transition shadow-lg"
                 >
-                  View Feedback
+                  Feedback
                 </Link>
               </div>
             ) : (
-              <p className="text-lg text-saru-cyan/60">
-                Login to access the dashboard and feedback tools.
+              <p className="text-saru-cyan/60 text-base">
+                Login to explore advanced analytics and insights.
               </p>
             )}
           </div>
 
-          {/* Futuristic Card with Metrics */}
+          {/* Stats Card */}
           <div className="relative">
-            <div className="bg-saru-slate rounded-2xl p-10 shadow-2xl border border-saru-teal/40 relative overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-br from-saru-cyan/10 via-saru-teal/20 to-transparent animate-pulse blur-2xl"></div>
-              <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-                <div className="absolute w-3 h-3 bg-saru-teal rounded-full animate-bounce top-10 left-12 opacity-70"></div>
-                <div className="absolute w-4 h-4 bg-saru-cyan rounded-full animate-ping top-20 right-16 opacity-70"></div>
-                <div className="absolute w-3 h-3 bg-saru-teal-light rounded-full animate-bounce delay-200 bottom-12 left-1/3 opacity-70"></div>
-              </div>
-              <div className="space-y-6 relative z-10">
-                <div className="bg-gradient-to-r from-saru-cyan via-saru-teal to-saru-teal-dark h-5 rounded-full animate-pulse shadow-lg"></div>
+            <div className="bg-saru-slate rounded-2xl p-10 shadow-2xl border border-saru-teal/30 relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-br from-saru-cyan/10 via-saru-teal/20 to-transparent blur-2xl animate-pulse"></div>
+              <div className="relative z-10 space-y-6">
+                <div className="bg-gradient-to-r from-saru-cyan via-saru-teal to-saru-teal-dark h-4 rounded-full animate-pulse"></div>
                 <div className="grid grid-cols-3 gap-4 mt-8">
-                  <div className="p-4 rounded-xl bg-saru-slate-dark border border-saru-teal/30 shadow-md hover:shadow-saru-teal/40 transition transform hover:scale-105">
-                    <p className="text-saru-teal-light text-xs">Feedbacks</p>
-                    <h3 className="text-white font-bold text-lg">12,430</h3>
-                    <span className="text-saru-cyan text-xs">+15% MoM</span>
-                  </div>
-                  <div className="p-4 rounded-xl bg-saru-slate-dark border border-saru-teal/30 shadow-md hover:shadow-saru-teal/40 transition transform hover:scale-105">
-                    <p className="text-saru-teal-light text-xs">NPS Score</p>
-                    <h3 className="text-white font-bold text-lg">68</h3>
-                    <span className="text-saru-cyan text-xs">↑ Strong</span>
-                  </div>
-                  <div className="p-4 rounded-xl bg-saru-slate-dark border border-saru-teal/30 shadow-md hover:shadow-saru-teal/40 transition transform hover:scale-105">
-                    <p className="text-saru-teal-light text-xs">Positivity %</p>
-                    <h3 className="text-white font-bold text-lg">72%</h3>
-                    <span className="text-saru-cyan text-xs">↑ Healthy</span>
-                  </div>
+                  {[
+                    { label: "Feedbacks", value: "12,430", status: "+15% MoM" },
+                    { label: "NPS Score", value: "68", status: "↑ Strong" },
+                    { label: "Positivity %", value: "72%", status: "↑ Healthy" },
+                  ].map((stat, i) => (
+                    <div
+                      key={i}
+                      className="p-4 rounded-xl bg-saru-slate-dark border border-saru-teal/30 shadow-md hover:shadow-saru-cyan/30 transition transform hover:scale-105"
+                    >
+                      <p className="text-saru-teal-light text-xs">{stat.label}</p>
+                      <h3 className="text-white font-bold text-lg">{stat.value}</h3>
+                      <span className="text-saru-cyan text-xs">{stat.status}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -239,11 +214,9 @@ export default function PageOne() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-saru-black-light py-8">
-        <div className="container mx-auto px-8 text-center">
-          <p className="text-saru-cyan">
-            Built with 🦅 vision · Feedback Collector 2025
-          </p>
+      <footer className="bg-gradient-to-r from-gray-900 via-saru-slate-dark to-black py-8 mt-16 border-t border-saru-cyan/20">
+        <div className="container mx-auto text-center text-saru-cyan/80">
+          <p>Built with 🦅 Vision · SARU Feedback Collector © 2025</p>
         </div>
       </footer>
     </div>
