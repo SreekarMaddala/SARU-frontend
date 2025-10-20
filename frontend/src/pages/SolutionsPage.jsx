@@ -1,30 +1,11 @@
 import React from "react";
+import Header from "../components/Header";
 
 const SaruSolutions = () => {
     return (
         <div id="webcrumbs">
+            <Header />
             <div className="min-h-screen bg-gray-900 text-teal-400">
-                {/* Navigation */}
-                <nav className="flex justify-between items-center p-4 border-b border-teal-400/30">
-                    <h1 className="text-2xl font-bold flex items-center">
-                        <span className="material-symbols-outlined mr-2">rocket_launch</span>
-                        SARU Solutions
-                    </h1>
-                    <div className="hidden md:flex space-x-6">
-                        <a href="#" className="hover:text-white transition-colors duration-300 flex items-center">
-                            <span className="material-symbols-outlined mr-1">dashboard</span> Dashboard
-                        </a>
-                        <a href="#" className="hover:text-white transition-colors duration-300 flex items-center">
-                            <span className="material-symbols-outlined mr-1">paid</span> Pricing
-                        </a>
-                        <a href="#" className="hover:text-white transition-colors duration-300 flex items-center">
-                            <span className="material-symbols-outlined mr-1">work</span> Careers
-                        </a>
-                    </div>
-                    <button className="md:hidden">
-                        <span className="material-symbols-outlined text-2xl hover:text-white transition-colors">menu</span>
-                    </button>
-                </nav>
 
                 {/* Hero Section */}
                 <section className="text-center py-16 px-4 bg-gradient-to-b from-gray-900 to-gray-800">
@@ -79,6 +60,45 @@ const SaruSolutions = () => {
                             <button className="bg-transparent border border-teal-400 text-teal-400 font-bold py-3 px-6 rounded-lg hover:bg-teal-400/10 transition-colors duration-300">
                                 Contact Sales
                             </button>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Testimonials */}
+                <section className="py-12 px-4 bg-gray-800">
+                    <div className="max-w-6xl mx-auto text-center">
+                        <h3 className="text-2xl md:text-3xl font-bold mb-8">What Our Clients Say</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            {[
+                                { quote: "SARU Solutions transformed our workflow!", name: "John Doe", company: "Tech Corp" },
+                                { quote: "Incredible analytics and support.", name: "Jane Smith", company: "Innovate Ltd" },
+                                { quote: "Highly recommend for security.", name: "Bob Johnson", company: "Secure Inc" }
+                            ].map((testimonial, idx) => (
+                                <div key={idx} className="bg-gray-900 p-6 rounded-xl border border-teal-400/20 hover:border-teal-400/40 transition-colors duration-300">
+                                    <p className="text-teal-400/70 mb-4">"{testimonial.quote}"</p>
+                                    <p className="text-teal-300 font-semibold">{testimonial.name}</p>
+                                    <p className="text-teal-400/50 text-sm">{testimonial.company}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* FAQs */}
+                <section className="py-12 px-4">
+                    <div className="max-w-4xl mx-auto">
+                        <h3 className="text-2xl md:text-3xl font-bold text-center mb-8">Frequently Asked Questions</h3>
+                        <div className="space-y-4">
+                            {[
+                                { q: "What is SARU Solutions?", a: "We provide cutting-edge solutions for business automation, analytics, collaboration, and security." },
+                                { q: "How do I get started?", a: "Contact us for a demo or sign up on our website to begin your free trial." },
+                                { q: "Is there a free trial?", a: "Yes, we offer a 14-day free trial with full access to all features." }
+                            ].map((faq, idx) => (
+                                <div key={idx} className="bg-gray-800 p-6 rounded-xl border border-teal-400/20 hover:border-teal-400/40 transition-colors duration-300">
+                                    <h4 className="text-teal-300 font-semibold mb-2">{faq.q}</h4>
+                                    <p className="text-teal-400/70">{faq.a}</p>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </section>
