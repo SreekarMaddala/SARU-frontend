@@ -34,7 +34,7 @@ usersApi.interceptors.response.use(
 
 // Users API functions
 export const getUsers = async () => {
-  const response = await usersApi.get("/customers/");
+  const response = await usersApi.get("/users/");
   return response.data;
 };
 
