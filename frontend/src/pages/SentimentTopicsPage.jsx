@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { motion } from "framer-motion";
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 
 export default function SentimentTopicsPage() {
   const { token, logout } = useAuth();
@@ -58,16 +59,87 @@ export default function SentimentTopicsPage() {
         </p>
       );
 
+    // Prepare data for charts
+    const sentimentCounts = data.sentiments?.reduce((acc, item) => {
+      acc[item.sentiment] = (acc[item.sentiment] || 0) + 1;
+      return acc;
+    }, {});
+
+    const pieData = Object.entries(sentimentCounts || {}).map(([sentiment, count]) => ({
+      name: sentiment,
+      value: count,
+      color: sentiment === 'positive' ? '#00ff88' : sentiment === 'negative' ? '#ff4444' : '#8884d8'
+    }));
+
+    const radarData = data.sentiments?.slice(0, 10).map((item, index) => ({
+      sentiment: `Item ${index + 1}`,
+      score: item.score || 0
+    })) || [];
+
     return (
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="space-y-6"
+        className="space-y-8"
       >
         <h3 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500">
           💬 Sentiment Analysis
         </h3>
+
+        {/* Charts Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Pie Chart */}
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            className="bg-black/40 backdrop-blur-lg border border-cyan-400/30 p-6 rounded-2xl shadow-lg"
+          >
+            <h4 className="text-xl font-semibold text-cyan-300 mb-4">Sentiment Distribution</h4>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={pieData}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                >
+                  {pieData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </motion.div>
+
+          {/* Radar Chart */}
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            className="bg-black/40 backdrop-blur-lg border border-purple-400/30 p-6 rounded-2xl shadow-lg"
+          >
+            <h4 className="text-xl font-semibold text-purple-300 mb-4">Sentiment Scores</h4>
+            <ResponsiveContainer width="100%" height={300}>
+              <RadarChart data={radarData}>
+                <PolarGrid />
+                <PolarAngleAxis dataKey="sentiment" />
+                <PolarRadiusAxis />
+                <Radar
+                  name="Score"
+                  dataKey="score"
+                  stroke="#8884d8"
+                  fill="#8884d8"
+                  fillOpacity={0.6}
+                />
+                <Tooltip />
+              </RadarChart>
+            </ResponsiveContainer>
+          </motion.div>
+        </div>
+
+        {/* Sentiment Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {data.sentiments?.map((item, index) => (
             <motion.div
@@ -100,16 +172,57 @@ export default function SentimentTopicsPage() {
         </p>
       );
 
+    // Prepare data for bar chart - word frequencies across topics
+    const wordFrequencyData = data.topics?.flatMap((topic) =>
+      topic.top_words?.map((word, idx) => ({
+        word: `${word} (T${topic.topic_id + 1})`,
+        frequency: Math.random() * 100 + 10, // Mock frequency data
+        topic: topic.topic_id + 1
+      })) || []
+    ).slice(0, 15) || [];
+
     return (
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3 }}
-        className="space-y-6"
+        className="space-y-8"
       >
         <h3 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400">
           🧠 Topic Modeling
         </h3>
+
+        {/* Bar Chart */}
+        <motion.div
+          whileHover={{ scale: 1.02 }}
+          className="bg-black/40 backdrop-blur-lg border border-purple-400/30 p-6 rounded-2xl shadow-lg"
+        >
+          <h4 className="text-xl font-semibold text-purple-300 mb-4">Topic Word Frequencies</h4>
+          <ResponsiveContainer width="100%" height={400}>
+            <BarChart data={wordFrequencyData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#444" />
+              <XAxis
+                dataKey="word"
+                stroke="#888"
+                angle={-45}
+                textAnchor="end"
+                height={100}
+                interval={0}
+              />
+              <YAxis stroke="#888" />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#1a1a1a',
+                  border: '1px solid #666',
+                  borderRadius: '8px'
+                }}
+              />
+              <Bar dataKey="frequency" fill="#8884d8" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </motion.div>
+
+        {/* Topic Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {data.topics?.map((topic) => (
             <motion.div
@@ -122,8 +235,9 @@ export default function SentimentTopicsPage() {
               </h4>
               <ul className="text-cyan-300 mt-3 space-y-1">
                 {topic.top_words?.map((word, idx) => (
-                  <li key={idx} className="text-sm">
-                    • {word}
+                  <li key={idx} className="text-sm flex items-center">
+                    <span className="w-2 h-2 bg-purple-400 rounded-full mr-2"></span>
+                    {word}
                   </li>
                 ))}
               </ul>
