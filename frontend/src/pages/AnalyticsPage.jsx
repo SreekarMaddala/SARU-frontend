@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 
 export default function AnalyticsPage() {
   const { token, logout } = useAuth();
-  const [analyticsData, setAnalyticsData] = useState({});
+  const [summaryData, setSummaryData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -13,290 +13,40 @@ export default function AnalyticsPage() {
     window.location.href = "/";
   };
 
-  const fetchAnalytics = async (endpoint) => {
+  const fetchSummaryData = async () => {
     try {
-      const res = await fetch(`http://localhost:8000/analytics/${endpoint}`, {
+      const res = await fetch('http://localhost:8000/analytics/company_performance', {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (!res.ok) throw new Error(`Failed to fetch ${endpoint}`);
+      if (!res.ok) throw new Error('Failed to fetch summary data');
       return await res.json();
     } catch (err) {
-      console.error(`Error fetching ${endpoint}:`, err);
-      return { message: `Error loading ${endpoint}` };
+      console.error('Error fetching summary data:', err);
+      return { message: 'Error loading summary data' };
     }
   };
 
   useEffect(() => {
-    const loadAllAnalytics = async () => {
+    const loadSummary = async () => {
       setLoading(true);
       setError(null);
       try {
-        const endpoints = [
-          'sentiment',
-          'topics',
-          'channels',
-          'users',
-          'company_performance',
-          'products',
-          'temporal',
-          'correlation'
-        ];
-
-        const results = await Promise.all(endpoints.map(fetchAnalytics));
-        const data = {};
-        endpoints.forEach((endpoint, index) => {
-          data[endpoint] = results[index];
-        });
-
-        setAnalyticsData(data);
+        const data = await fetchSummaryData();
+        setSummaryData(data);
       } catch (err) {
-        setError('Failed to load analytics data');
-        console.error('Error loading analytics:', err);
+        setError('Failed to load analytics summary');
+        console.error('Error loading summary:', err);
       }
       setLoading(false);
     };
 
-    loadAllAnalytics();
+    loadSummary();
   }, [token]);
-
-  const renderSentimentAnalysis = () => {
-    const data = analyticsData.sentiment;
-    if (!data || data.message) return <p className="text-saru-cyan">{data?.message || 'No data'}</p>;
-
-    return (
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-saru-cyan">Sentiment Analysis</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {data.sentiments?.map((item, index) => (
-            <div key={index} className="bg-saru-black p-4 rounded-lg border border-saru-cyan/30">
-              <p className="text-sm text-saru-teal mb-2">{item.text.substring(0, 100)}...</p>
-              <p className="text-saru-cyan font-semibold">Sentiment: {item.sentiment}</p>
-              <p className="text-saru-teal">Score: {item.score?.toFixed(2)}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
-  const renderTopicModeling = () => {
-    const data = analyticsData.topics;
-    if (!data || data.message) return <p className="text-saru-cyan">{data?.message || 'No data'}</p>;
-
-    return (
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-saru-cyan">Topic Modeling</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {data.topics?.map((topic) => (
-            <div key={topic.topic_id} className="bg-saru-black p-4 rounded-lg border border-saru-cyan/30">
-              <h4 className="text-saru-teal font-semibold">Topic {topic.topic_id + 1}</h4>
-              <ul className="text-saru-cyan mt-2">
-                {topic.top_words?.map((word, idx) => (
-                  <li key={idx} className="text-sm">• {word}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
-  const renderChannelAnalysis = () => {
-    const data = analyticsData.channels;
-    if (!data || data.message) return <p className="text-saru-cyan">{data?.message || 'No data'}</p>;
-
-    return (
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-saru-cyan">Channel Analysis</h3>
-        <div className="bg-saru-black p-4 rounded-lg border border-saru-cyan/30">
-          <h4 className="text-saru-teal font-semibold mb-4">Channel Counts</h4>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {Object.entries(data.channel_counts || {}).map(([channel, count]) => (
-              <div key={channel} className="text-center">
-                <p className="text-2xl font-bold text-saru-cyan">{count}</p>
-                <p className="text-saru-teal text-sm">{channel}</p>
-              </div>
-            ))}
-          </div>
-          <h4 className="text-saru-teal font-semibold mt-6 mb-4">Average Sentiment per Channel</h4>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {Object.entries(data.avg_sentiment_per_channel || {}).map(([channel, avg]) => (
-              <div key={channel} className="text-center">
-                <p className="text-2xl font-bold text-saru-cyan">{avg?.toFixed(2)}</p>
-                <p className="text-saru-teal text-sm">{channel}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderUserBehavior = () => {
-    const data = analyticsData.users;
-    if (!data || data.message) return <p className="text-saru-cyan">{data?.message || 'No data'}</p>;
-
-    return (
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-saru-cyan">User Behavior Analysis</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-saru-black p-4 rounded-lg border border-saru-cyan/30">
-            <h4 className="text-saru-teal font-semibold mb-4">User Feedback Frequency</h4>
-            <div className="space-y-2 max-h-40 overflow-y-auto">
-              {Object.entries(data.user_feedback_frequency || {}).map(([user, freq]) => (
-                <div key={user} className="flex justify-between">
-                  <span className="text-saru-cyan">{user}</span>
-                  <span className="text-saru-teal">{freq}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="bg-saru-black p-4 rounded-lg border border-saru-cyan/30">
-            <h4 className="text-saru-teal font-semibold mb-4">User Average Sentiment</h4>
-            <div className="space-y-2 max-h-40 overflow-y-auto">
-              {Object.entries(data.user_avg_sentiment || {}).map(([user, avg]) => (
-                <div key={user} className="flex justify-between">
-                  <span className="text-saru-cyan">{user}</span>
-                  <span className="text-saru-teal">{avg?.toFixed(2)}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderCompanyPerformance = () => {
-    const data = analyticsData.company_performance;
-    if (!data || data.message) return <p className="text-saru-cyan">{data?.message || 'No data'}</p>;
-
-    return (
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-saru-cyan">Company Performance</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-saru-black p-4 rounded-lg border border-saru-cyan/30 text-center">
-            <p className="text-2xl font-bold text-saru-cyan">{data.total_feedback}</p>
-            <p className="text-saru-teal text-sm">Total Feedback</p>
-          </div>
-          <div className="bg-saru-black p-4 rounded-lg border border-saru-cyan/30 text-center">
-            <p className="text-2xl font-bold text-saru-cyan">{data.avg_sentiment?.toFixed(2)}</p>
-            <p className="text-saru-teal text-sm">Avg Sentiment</p>
-          </div>
-          <div className="bg-saru-black p-4 rounded-lg border border-saru-cyan/30 col-span-2">
-            <h4 className="text-saru-teal font-semibold mb-2">Topic Counts</h4>
-            <div className="grid grid-cols-2 gap-2">
-              {Object.entries(data.topic_counts || {}).map(([topic, count]) => (
-                <div key={topic} className="flex justify-between">
-                  <span className="text-saru-cyan text-sm">{topic}</span>
-                  <span className="text-saru-teal">{count}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderProductAnalysis = () => {
-    const data = analyticsData.products;
-    if (!data || data.message) return <p className="text-saru-cyan">{data?.message || 'No data'}</p>;
-
-    return (
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-saru-cyan">Product Feedback Analysis</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-saru-black p-4 rounded-lg border border-saru-cyan/30">
-            <h4 className="text-saru-teal font-semibold mb-4">Product Average Sentiment</h4>
-            <div className="space-y-2">
-              {Object.entries(data.product_avg_sentiment || {}).map(([product, avg]) => (
-                <div key={product} className="flex justify-between">
-                  <span className="text-saru-cyan">Product {product}</span>
-                  <span className="text-saru-teal">{avg?.toFixed(2)}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="bg-saru-black p-4 rounded-lg border border-saru-cyan/30">
-            <h4 className="text-saru-teal font-semibold mb-4">Product Feedback Counts</h4>
-            <div className="space-y-2">
-              {Object.entries(data.product_feedback_counts || {}).map(([product, count]) => (
-                <div key={product} className="flex justify-between">
-                  <span className="text-saru-cyan">Product {product}</span>
-                  <span className="text-saru-teal">{count}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderTemporalAnalysis = () => {
-    const data = analyticsData.temporal;
-    if (!data || data.message) return <p className="text-saru-cyan">{data?.message || 'No data'}</p>;
-
-    return (
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-saru-cyan">Temporal Analysis</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-saru-black p-4 rounded-lg border border-saru-cyan/30">
-            <h4 className="text-saru-teal font-semibold mb-4">Daily Feedback Counts</h4>
-            <div className="space-y-2 max-h-40 overflow-y-auto">
-              {Object.entries(data.daily_feedback_counts || {}).map(([date, count]) => (
-                <div key={date} className="flex justify-between">
-                  <span className="text-saru-cyan">{date}</span>
-                  <span className="text-saru-teal">{count}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="bg-saru-black p-4 rounded-lg border border-saru-cyan/30">
-            <h4 className="text-saru-teal font-semibold mb-4">Daily Average Sentiment</h4>
-            <div className="space-y-2 max-h-40 overflow-y-auto">
-              {Object.entries(data.daily_avg_sentiment || {}).map(([date, avg]) => (
-                <div key={date} className="flex justify-between">
-                  <span className="text-saru-cyan">{date}</span>
-                  <span className="text-saru-teal">{avg?.toFixed(2)}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderCorrelationAnalysis = () => {
-    const data = analyticsData.correlation;
-    if (!data || data.message) return <p className="text-saru-cyan">{data?.message || 'No data'}</p>;
-
-    return (
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-saru-cyan">Correlation & Predictive Analysis</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-saru-black p-4 rounded-lg border border-saru-cyan/30 text-center">
-            <p className="text-2xl font-bold text-saru-cyan">{data.correlation_likes_sentiment?.toFixed(2)}</p>
-            <p className="text-saru-teal text-sm">Correlation (Likes vs Sentiment)</p>
-          </div>
-          <div className="bg-saru-black p-4 rounded-lg border border-saru-cyan/30">
-            <h4 className="text-saru-teal font-semibold mb-4">Predicted Sentiments</h4>
-            <p className="text-saru-cyan text-sm">
-              {data.predicted_sentiments?.length} predictions available
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  };
 
   if (loading) {
     return (
       <div className="min-h-screen bg-saru-black flex items-center justify-center">
-        <div className="text-saru-cyan text-xl">Loading analytics...</div>
+        <div className="text-saru-cyan text-xl">Loading analytics summary...</div>
       </div>
     );
   }
@@ -357,17 +107,55 @@ export default function AnalyticsPage() {
       </nav>
 
       <div className="p-8 space-y-12">
-        <h1 className="text-5xl font-bold text-saru-cyan mb-8">Analytics Dashboard</h1>
+        <h1 className="text-5xl font-bold text-saru-cyan mb-8">Analytics Overview</h1>
 
-        <div className="space-y-12">
-          {renderSentimentAnalysis()}
-          {renderTopicModeling()}
-          {renderChannelAnalysis()}
-          {renderUserBehavior()}
-          {renderCompanyPerformance()}
-          {renderProductAnalysis()}
-          {renderTemporalAnalysis()}
-          {renderCorrelationAnalysis()}
+        {/* Summary Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          <div className="bg-saru-black p-6 rounded-lg border border-saru-cyan/30 text-center">
+            <p className="text-4xl font-bold text-saru-cyan mb-2">{summaryData.total_feedback || 0}</p>
+            <p className="text-saru-teal">Total Feedback</p>
+          </div>
+          <div className="bg-saru-black p-6 rounded-lg border border-saru-cyan/30 text-center">
+            <p className="text-4xl font-bold text-saru-cyan mb-2">{summaryData.avg_sentiment?.toFixed(2) || 'N/A'}</p>
+            <p className="text-saru-teal">Average Sentiment</p>
+          </div>
+          <div className="bg-saru-black p-6 rounded-lg border border-saru-cyan/30 text-center">
+            <p className="text-4xl font-bold text-saru-cyan mb-2">{Object.keys(summaryData.topic_counts || {}).length}</p>
+            <p className="text-saru-teal">Topics Identified</p>
+          </div>
+        </div>
+
+        {/* Navigation Cards to Sub-Pages */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <Link to="/analytics/sentiment-topics" className="group">
+            <div className="bg-saru-black p-8 rounded-lg border border-saru-cyan/30 hover:border-saru-cyan transition duration-300 group-hover:scale-105">
+              <h3 className="text-2xl font-bold text-saru-cyan mb-4">Sentiment & Topics</h3>
+              <p className="text-saru-teal mb-6">Analyze sentiment patterns and discover key topics in your feedback</p>
+              <div className="text-saru-cyan font-semibold group-hover:text-saru-teal transition duration-300">
+                Explore → →
+              </div>
+            </div>
+          </Link>
+
+          <Link to="/analytics/channel-user" className="group">
+            <div className="bg-saru-black p-8 rounded-lg border border-saru-cyan/30 hover:border-saru-cyan transition duration-300 group-hover:scale-105">
+              <h3 className="text-2xl font-bold text-saru-cyan mb-4">Channels & Users</h3>
+              <p className="text-saru-teal mb-6">Understand feedback distribution across channels and user behavior</p>
+              <div className="text-saru-cyan font-semibold group-hover:text-saru-teal transition duration-300">
+                Explore → →
+              </div>
+            </div>
+          </Link>
+
+          <Link to="/analytics/performance-advanced" className="group">
+            <div className="bg-saru-black p-8 rounded-lg border border-saru-cyan/30 hover:border-saru-cyan transition duration-300 group-hover:scale-105">
+              <h3 className="text-2xl font-bold text-saru-cyan mb-4">Performance & Advanced</h3>
+              <p className="text-saru-teal mb-6">Deep dive into performance metrics, temporal trends, and correlations</p>
+              <div className="text-saru-cyan font-semibold group-hover:text-saru-teal transition duration-300">
+                Explore → →
+              </div>
+            </div>
+          </Link>
         </div>
       </div>
     </div>

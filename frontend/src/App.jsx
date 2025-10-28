@@ -5,6 +5,9 @@ import PageOne from './pages/PageOne';
 import FeedbackTablePage from './pages/FeedbackTablePage';
 import DashboardPage from './pages/DashboardPage';
 import AnalyticsPage from './pages/AnalyticsPage';
+import SentimentTopicsPage from './pages/SentimentTopicsPage';
+import ChannelUserPage from './pages/ChannelUserPage';
+import PerformanceAdvancedPage from './pages/PerformanceAdvancedPage';
 import CustomerDataPage from './pages/CustomerDataPage';
 import ProductsPage from './pages/ProductsPage';
 import PricingPage from './pages/PricingPage';
@@ -62,6 +65,30 @@ function App() {
           element={
             <ProtectedRoute>
               <AnalyticsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/analytics/sentiment-topics"
+          element={
+            <ProtectedRoute>
+              <SentimentTopicsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/analytics/channel-user"
+          element={
+            <ProtectedRoute>
+              <ChannelUserPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/analytics/performance-advanced"
+          element={
+            <ProtectedRoute>
+              <PerformanceAdvancedPage />
             </ProtectedRoute>
           }
         />
