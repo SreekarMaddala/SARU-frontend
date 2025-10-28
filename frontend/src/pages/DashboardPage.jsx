@@ -26,6 +26,10 @@ export default function DashboardPage() {
           </div>
           <div className="hidden md:flex space-x-8 items-center">
             <span className="text-saru-teal font-semibold">Dashboard</span>
+            <Link to="/analytics" className="text-saru-cyan hover:text-saru-teal transition duration-300 relative">
+              Analytics
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-saru-teal transition-all duration-300 hover:w-full"></span>
+            </Link>
             <Link to="/feedback-table" className="text-saru-cyan hover:text-saru-teal transition duration-300 relative">
               Feedback Table
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-saru-teal transition-all duration-300 hover:w-full"></span>

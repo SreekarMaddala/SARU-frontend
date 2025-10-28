@@ -1,6 +1,39 @@
-- [x] Update Hero Section container to 2x2 grid layout
-- [x] Restructure inner divs for 4 equal areas: Top-left (Heading + Text + Buttons), Top-right (Stats Card), Bottom-left (Two circular images: kavya and msk), Bottom-right (Two circular images: ntr and tekkali)
-- [x] Update image sources to correct paths
-- [x] Remove responsive order classes
-- [x] Adjust size of photos to equal (w-[240px] h-[240px]) and remove borders
-- [ ] Test the layout by running the development server
+# TODO: Implement Analytics Page
+
+## Steps to Complete
+
+1. **Create AnalyticsPage.jsx**
+   - Create the component in `frontend/src/pages/AnalyticsPage.jsx`
+   - Implement fetching data from backend analytics endpoints:
+     - /analytics/sentiment
+     - /analytics/topics
+     - /analytics/channels
+     - /analytics/users
+     - /analytics/company_performance
+     - /analytics/products
+     - /analytics/temporal
+     - /analytics/correlation
+   - Display data in user-friendly sections (tables/lists)
+   - Handle loading and error states
+
+2. **Add Route in App.jsx**
+   - Add a protected route for `/analytics` pointing to `AnalyticsPage`
+
+3. **Update DashboardPage.jsx Navigation**
+   - Add a navigation link to `/analytics` in the nav bar
+
+4. **Test the Implementation**
+   - Ensure the page loads correctly
+   - Verify data fetching works with authentication
+   - Check responsiveness and styling
+
+## Notes
+- Use the existing auth context for token-based API calls
+- Follow the project's styling conventions (Tailwind with custom saru colors)
+- Ensure the page is protected and requires authentication
+
+## Completed Steps
+- [x] Create AnalyticsPage.jsx
+- [x] Add Route in App.jsx
+- [x] Update DashboardPage.jsx Navigation
+- [ ] Test the Implementation
