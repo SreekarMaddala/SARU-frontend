@@ -17,7 +17,7 @@ export default function ChannelUserPage() {
 
   const fetchAnalytics = async (endpoint) => {
     try {
-      const res = await fetch(`http://localhost:8000/analytics/${endpoint}`, {
+      const res = await fetch(`http://localhost:8000/${endpoint}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error(`Failed to fetch ${endpoint}`);
