@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { motion } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
+import { fetchChannels, fetchUserBehavior } from '../services/analyticsApi';
 
 export default function ChannelUserPage() {
   const { token, logout } = useAuth();
@@ -33,13 +34,14 @@ export default function ChannelUserPage() {
       setLoading(true);
       setError(null);
       try {
-        const endpoints = ['channels'];
-        const results = await Promise.all(endpoints.map(fetchAnalytics));
-        const data = {};
-        endpoints.forEach((endpoint, index) => {
-          data[endpoint] = results[index];
+        const [channels, users] = await Promise.all([
+          fetchChannels(),
+          fetchUserBehavior()
+        ]);
+        setAnalyticsData({
+          channels,
+          users
         });
-        setAnalyticsData(data);
       } catch (err) {
         setError('Failed to load analytics data');
         console.error('Error loading analytics:', err);
@@ -48,7 +50,7 @@ export default function ChannelUserPage() {
     };
 
     loadAnalytics();
-  }, [token]);
+  }, []);
 
   const renderChannelAnalysis = () => {
     const data = analyticsData.channels;
@@ -353,6 +355,7 @@ export default function ChannelUserPage() {
       {/* Content */}
       <div className="p-10 space-y-16">
         {renderChannelAnalysis()}
+        {renderUserBehavior()}
       </div>
     </div>
   );

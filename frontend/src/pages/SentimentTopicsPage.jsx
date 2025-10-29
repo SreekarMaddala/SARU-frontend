@@ -1,8 +1,10 @@
+
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { motion } from "framer-motion";
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
+import { fetchSentimentAnalysis, fetchTopics } from "../services/analyticsApi";
 
 export default function SentimentTopicsPage() {
   const { token, logout } = useAuth();
@@ -33,13 +35,14 @@ export default function SentimentTopicsPage() {
       setLoading(true);
       setError(null);
       try {
-        const endpoints = ["sentiment_trend", "topics_top"];
-        const results = await Promise.all(endpoints.map(fetchAnalytics));
-        const data = {};
-        endpoints.forEach((endpoint, index) => {
-          data[endpoint] = results[index];
+        const [sentimentSamples, topicsTop] = await Promise.all([
+          fetchSentimentAnalysis(),
+          fetchTopics()
+        ]);
+        setAnalyticsData({
+          sentiment_trend: sentimentSamples,
+          topics_top: topicsTop
         });
-        setAnalyticsData(data);
       } catch (err) {
         setError("Failed to load analytics data");
         console.error("Error loading analytics:", err);
@@ -48,7 +51,7 @@ export default function SentimentTopicsPage() {
     };
 
     loadAnalytics();
-  }, [token]);
+  }, []);
 
   const renderSentimentAnalysis = () => {
     const data = analyticsData.sentiment_trend;
@@ -59,13 +62,12 @@ export default function SentimentTopicsPage() {
         </p>
       );
 
-    // Prepare data for line chart - sentiment trend over time
-    const trendData = data.map((item) => ({
-      date: item.date,
-      positive: item.positive,
-      neutral: item.neutral,
-      negative: item.negative
-    }));
+    // Prepare data for bar chart - sentiment analysis
+    const sentimentData = data.sentiments?.map((item) => ({
+      text: item.text,
+      sentiment: item.sentiment,
+      score: item.score
+    })) || [];
 
     return (
       <motion.div
@@ -78,59 +80,32 @@ export default function SentimentTopicsPage() {
           📈 Sentiment Trend
         </h3>
 
-        {/* Line Chart */}
+        {/* Sentiment List */}
         <motion.div
           whileHover={{ scale: 1.02 }}
           className="bg-black/40 backdrop-blur-lg border border-cyan-400/30 p-6 rounded-2xl shadow-lg"
         >
-          <h4 className="text-xl font-semibold text-cyan-300 mb-4">Sentiment Trend Over Time</h4>
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={trendData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#444" />
-              <XAxis dataKey="date" stroke="#888" />
-              <YAxis stroke="#888" />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: '#1a1a1a',
-                  border: '1px solid #666',
-                  borderRadius: '8px'
-                }}
-              />
-              <Bar dataKey="positive" stackId="a" fill="#00ff88" />
-              <Bar dataKey="neutral" stackId="a" fill="#8884d8" />
-              <Bar dataKey="negative" stackId="a" fill="#ff4444" />
-            </BarChart>
-          </ResponsiveContainer>
+          <h4 className="text-xl font-semibold text-cyan-300 mb-4">Sentiment Analysis</h4>
+          <div className="space-y-4 max-h-96 overflow-y-auto">
+            {sentimentData.map((item, index) => (
+              <div key={index} className="flex justify-between items-center p-4 bg-gray-800/50 rounded-lg">
+                <div className="flex-1">
+                  <p className="text-cyan-300 text-sm">{item.text}</p>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <span className={`px-2 py-1 rounded text-xs font-semibold ${
+                    item.sentiment === 'positive' ? 'bg-green-500 text-white' :
+                    item.sentiment === 'negative' ? 'bg-red-500 text-white' :
+                    'bg-blue-500 text-white'
+                  }`}>
+                    {item.sentiment}
+                  </span>
+                  <span className="text-cyan-400 text-sm">{item.score?.toFixed(2)}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </motion.div>
-
-        {/* Trend Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {trendData.slice(-1)[0] && (
-            <>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="bg-black/40 backdrop-blur-lg border border-green-400/30 p-5 rounded-2xl shadow-lg hover:shadow-green-400/20 transition-all"
-              >
-                <p className="text-green-300 font-semibold">Latest Positive</p>
-                <p className="text-2xl font-bold text-green-400">{trendData.slice(-1)[0].positive}</p>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="bg-black/40 backdrop-blur-lg border border-blue-400/30 p-5 rounded-2xl shadow-lg hover:shadow-blue-400/20 transition-all"
-              >
-                <p className="text-blue-300 font-semibold">Latest Neutral</p>
-                <p className="text-2xl font-bold text-blue-400">{trendData.slice(-1)[0].neutral}</p>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="bg-black/40 backdrop-blur-lg border border-red-400/30 p-5 rounded-2xl shadow-lg hover:shadow-red-400/20 transition-all"
-              >
-                <p className="text-red-300 font-semibold">Latest Negative</p>
-                <p className="text-2xl font-bold text-red-400">{trendData.slice(-1)[0].negative}</p>
-              </motion.div>
-            </>
-          )}
-        </div>
       </motion.div>
     );
   };
@@ -144,15 +119,6 @@ export default function SentimentTopicsPage() {
         </p>
       );
 
-    // Prepare data for bar chart - top words across topics
-    const wordFrequencyData = data.flatMap((topic) =>
-      topic.top_words?.map((word, idx) => ({
-        word: `${word} (T${topic.topic_id + 1})`,
-        frequency: topic.word_frequencies?.[idx] || Math.random() * 100 + 10,
-        topic: topic.topic_id + 1
-      })) || []
-    ).slice(0, 15) || [];
-
     return (
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -164,39 +130,9 @@ export default function SentimentTopicsPage() {
           🧠 Topic Modeling
         </h3>
 
-        {/* Bar Chart */}
-        <motion.div
-          whileHover={{ scale: 1.02 }}
-          className="bg-black/40 backdrop-blur-lg border border-purple-400/30 p-6 rounded-2xl shadow-lg"
-        >
-          <h4 className="text-xl font-semibold text-purple-300 mb-4">Top Words by Topic</h4>
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={wordFrequencyData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#444" />
-              <XAxis
-                dataKey="word"
-                stroke="#888"
-                angle={-45}
-                textAnchor="end"
-                height={100}
-                interval={0}
-              />
-              <YAxis stroke="#888" />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: '#1a1a1a',
-                  border: '1px solid #666',
-                  borderRadius: '8px'
-                }}
-              />
-              <Bar dataKey="frequency" fill="#8884d8" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </motion.div>
-
         {/* Topic Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {data.map((topic) => (
+          {data.topics?.map((topic) => (
             <motion.div
               key={topic.topic_id}
               whileHover={{ scale: 1.05 }}

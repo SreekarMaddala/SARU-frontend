@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { fetchCompanyPerformance, fetchProducts, fetchTemporal, fetchCorrelation } from '../services/analyticsApi';
 
 export default function PerformanceAdvancedPage() {
   const { token, logout } = useAuth();
@@ -13,31 +14,23 @@ export default function PerformanceAdvancedPage() {
     window.location.href = "/";
   };
 
-  const fetchAnalytics = async (endpoint) => {
-    try {
-      const res = await fetch(`http://localhost:8000/analytics/${endpoint}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error(`Failed to fetch ${endpoint}`);
-      return await res.json();
-    } catch (err) {
-      console.error(`Error fetching ${endpoint}:`, err);
-      return { message: `Error loading ${endpoint}` };
-    }
-  };
-
   useEffect(() => {
     const loadAnalytics = async () => {
       setLoading(true);
       setError(null);
       try {
-        const endpoints = ['company_performance', 'products', 'temporal', 'correlation'];
-        const results = await Promise.all(endpoints.map(fetchAnalytics));
-        const data = {};
-        endpoints.forEach((endpoint, index) => {
-          data[endpoint] = results[index];
+        const [companyPerformance, products, temporal, correlation] = await Promise.all([
+          fetchCompanyPerformance(),
+          fetchProducts(),
+          fetchTemporal(),
+          fetchCorrelation()
+        ]);
+        setAnalyticsData({
+          company_performance: companyPerformance,
+          products,
+          temporal,
+          correlation
         });
-        setAnalyticsData(data);
       } catch (err) {
         setError('Failed to load analytics data');
         console.error('Error loading analytics:', err);
@@ -46,7 +39,7 @@ export default function PerformanceAdvancedPage() {
     };
 
     loadAnalytics();
-  }, [token]);
+  }, []);
 
   const renderCompanyPerformance = () => {
     const data = analyticsData.company_performance;
