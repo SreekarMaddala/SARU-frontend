@@ -33,7 +33,7 @@ export default function SentimentTopicsPage() {
       setLoading(true);
       setError(null);
       try {
-        const endpoints = ["sentiment", "topics"];
+        const endpoints = ["sentiment_trend", "topics_top"];
         const results = await Promise.all(endpoints.map(fetchAnalytics));
         const data = {};
         endpoints.forEach((endpoint, index) => {
@@ -51,7 +51,7 @@ export default function SentimentTopicsPage() {
   }, [token]);
 
   const renderSentimentAnalysis = () => {
-    const data = analyticsData.sentiment;
+    const data = analyticsData.sentiment_trend;
     if (!data || data.message)
       return (
         <p className="text-cyan-400 text-lg font-medium">
@@ -59,22 +59,13 @@ export default function SentimentTopicsPage() {
         </p>
       );
 
-    // Prepare data for charts
-    const sentimentCounts = data.sentiments?.reduce((acc, item) => {
-      acc[item.sentiment] = (acc[item.sentiment] || 0) + 1;
-      return acc;
-    }, {});
-
-    const pieData = Object.entries(sentimentCounts || {}).map(([sentiment, count]) => ({
-      name: sentiment,
-      value: count,
-      color: sentiment === 'positive' ? '#00ff88' : sentiment === 'negative' ? '#ff4444' : '#8884d8'
+    // Prepare data for line chart - sentiment trend over time
+    const trendData = data.map((item) => ({
+      date: item.date,
+      positive: item.positive,
+      neutral: item.neutral,
+      negative: item.negative
     }));
-
-    const radarData = data.sentiments?.slice(0, 10).map((item, index) => ({
-      sentiment: `Item ${index + 1}`,
-      score: item.score || 0
-    })) || [];
 
     return (
       <motion.div
@@ -84,87 +75,68 @@ export default function SentimentTopicsPage() {
         className="space-y-8"
       >
         <h3 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500">
-          💬 Sentiment Analysis
+          📈 Sentiment Trend
         </h3>
 
-        {/* Charts Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Pie Chart */}
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="bg-black/40 backdrop-blur-lg border border-cyan-400/30 p-6 rounded-2xl shadow-lg"
-          >
-            <h4 className="text-xl font-semibold text-cyan-300 mb-4">Sentiment Distribution</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={pieData}
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                >
-                  {pieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </motion.div>
+        {/* Line Chart */}
+        <motion.div
+          whileHover={{ scale: 1.02 }}
+          className="bg-black/40 backdrop-blur-lg border border-cyan-400/30 p-6 rounded-2xl shadow-lg"
+        >
+          <h4 className="text-xl font-semibold text-cyan-300 mb-4">Sentiment Trend Over Time</h4>
+          <ResponsiveContainer width="100%" height={400}>
+            <BarChart data={trendData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#444" />
+              <XAxis dataKey="date" stroke="#888" />
+              <YAxis stroke="#888" />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#1a1a1a',
+                  border: '1px solid #666',
+                  borderRadius: '8px'
+                }}
+              />
+              <Bar dataKey="positive" stackId="a" fill="#00ff88" />
+              <Bar dataKey="neutral" stackId="a" fill="#8884d8" />
+              <Bar dataKey="negative" stackId="a" fill="#ff4444" />
+            </BarChart>
+          </ResponsiveContainer>
+        </motion.div>
 
-          {/* Radar Chart */}
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="bg-black/40 backdrop-blur-lg border border-purple-400/30 p-6 rounded-2xl shadow-lg"
-          >
-            <h4 className="text-xl font-semibold text-purple-300 mb-4">Sentiment Scores</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <RadarChart data={radarData}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey="sentiment" />
-                <PolarRadiusAxis />
-                <Radar
-                  name="Score"
-                  dataKey="score"
-                  stroke="#8884d8"
-                  fill="#8884d8"
-                  fillOpacity={0.6}
-                />
-                <Tooltip />
-              </RadarChart>
-            </ResponsiveContainer>
-          </motion.div>
-        </div>
-
-        {/* Sentiment Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {data.sentiments?.map((item, index) => (
-            <motion.div
-              key={index}
-              whileHover={{ scale: 1.05 }}
-              className="bg-black/40 backdrop-blur-lg border border-cyan-400/30 p-5 rounded-2xl shadow-lg hover:shadow-cyan-400/20 transition-all"
-            >
-              <p className="text-sm text-gray-300 mb-3">
-                {item.text.substring(0, 100)}...
-              </p>
-              <p className="text-cyan-300 font-semibold">
-                Sentiment: {item.sentiment}
-              </p>
-              <p className="text-purple-300">
-                Score: {item.score?.toFixed(2)}
-              </p>
-            </motion.div>
-          ))}
+        {/* Trend Summary Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {trendData.slice(-1)[0] && (
+            <>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="bg-black/40 backdrop-blur-lg border border-green-400/30 p-5 rounded-2xl shadow-lg hover:shadow-green-400/20 transition-all"
+              >
+                <p className="text-green-300 font-semibold">Latest Positive</p>
+                <p className="text-2xl font-bold text-green-400">{trendData.slice(-1)[0].positive}</p>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="bg-black/40 backdrop-blur-lg border border-blue-400/30 p-5 rounded-2xl shadow-lg hover:shadow-blue-400/20 transition-all"
+              >
+                <p className="text-blue-300 font-semibold">Latest Neutral</p>
+                <p className="text-2xl font-bold text-blue-400">{trendData.slice(-1)[0].neutral}</p>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="bg-black/40 backdrop-blur-lg border border-red-400/30 p-5 rounded-2xl shadow-lg hover:shadow-red-400/20 transition-all"
+              >
+                <p className="text-red-300 font-semibold">Latest Negative</p>
+                <p className="text-2xl font-bold text-red-400">{trendData.slice(-1)[0].negative}</p>
+              </motion.div>
+            </>
+          )}
         </div>
       </motion.div>
     );
   };
 
   const renderTopicModeling = () => {
-    const data = analyticsData.topics;
+    const data = analyticsData.topics_top;
     if (!data || data.message)
       return (
         <p className="text-cyan-400 text-lg font-medium">
@@ -172,11 +144,11 @@ export default function SentimentTopicsPage() {
         </p>
       );
 
-    // Prepare data for bar chart - word frequencies across topics
-    const wordFrequencyData = data.topics?.flatMap((topic) =>
+    // Prepare data for bar chart - top words across topics
+    const wordFrequencyData = data.flatMap((topic) =>
       topic.top_words?.map((word, idx) => ({
         word: `${word} (T${topic.topic_id + 1})`,
-        frequency: Math.random() * 100 + 10, // Mock frequency data
+        frequency: topic.word_frequencies?.[idx] || Math.random() * 100 + 10,
         topic: topic.topic_id + 1
       })) || []
     ).slice(0, 15) || [];
@@ -197,7 +169,7 @@ export default function SentimentTopicsPage() {
           whileHover={{ scale: 1.02 }}
           className="bg-black/40 backdrop-blur-lg border border-purple-400/30 p-6 rounded-2xl shadow-lg"
         >
-          <h4 className="text-xl font-semibold text-purple-300 mb-4">Topic Word Frequencies</h4>
+          <h4 className="text-xl font-semibold text-purple-300 mb-4">Top Words by Topic</h4>
           <ResponsiveContainer width="100%" height={400}>
             <BarChart data={wordFrequencyData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#444" />
@@ -224,7 +196,7 @@ export default function SentimentTopicsPage() {
 
         {/* Topic Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {data.topics?.map((topic) => (
+          {data.map((topic) => (
             <motion.div
               key={topic.topic_id}
               whileHover={{ scale: 1.05 }}

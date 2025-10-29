@@ -15,7 +15,7 @@ export default function AnalyticsPage() {
 
   const fetchSummaryData = async () => {
     try {
-      const res = await fetch('http://localhost:8000/analytics/company_performance', {
+      const res = await fetch('http://localhost:8000/analytics/summary', {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error('Failed to fetch summary data');
@@ -110,18 +110,48 @@ export default function AnalyticsPage() {
         <h1 className="text-5xl font-bold text-saru-cyan mb-8">Analytics Overview</h1>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           <div className="bg-saru-black p-6 rounded-lg border border-saru-cyan/30 text-center">
-            <p className="text-4xl font-bold text-saru-cyan mb-2">{summaryData.total_feedback || 0}</p>
+            <p className="text-4xl font-bold text-saru-cyan mb-2">{summaryData.total || 0}</p>
             <p className="text-saru-teal">Total Feedback</p>
           </div>
           <div className="bg-saru-black p-6 rounded-lg border border-saru-cyan/30 text-center">
-            <p className="text-4xl font-bold text-saru-cyan mb-2">{summaryData.avg_sentiment?.toFixed(2) || 'N/A'}</p>
-            <p className="text-saru-teal">Average Sentiment</p>
+            <p className="text-4xl font-bold text-green-400 mb-2">{summaryData.positive || 0}</p>
+            <p className="text-saru-teal">Positive</p>
           </div>
           <div className="bg-saru-black p-6 rounded-lg border border-saru-cyan/30 text-center">
-            <p className="text-4xl font-bold text-saru-cyan mb-2">{Object.keys(summaryData.topic_counts || {}).length}</p>
-            <p className="text-saru-teal">Topics Identified</p>
+            <p className="text-4xl font-bold text-yellow-400 mb-2">{summaryData.neutral || 0}</p>
+            <p className="text-saru-teal">Neutral</p>
+          </div>
+          <div className="bg-saru-black p-6 rounded-lg border border-saru-cyan/30 text-center">
+            <p className="text-4xl font-bold text-red-400 mb-2">{summaryData.negative || 0}</p>
+            <p className="text-saru-teal">Negative</p>
+          </div>
+        </div>
+
+        {/* Additional Summary Info */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          <div className="bg-saru-black p-6 rounded-lg border border-saru-cyan/30">
+            <h4 className="text-saru-teal font-semibold mb-4">Feedback by Channel</h4>
+            <div className="space-y-2">
+              {summaryData.by_channel && Object.entries(summaryData.by_channel).map(([channel, count]) => (
+                <div key={channel} className="flex justify-between">
+                  <span className="text-saru-cyan capitalize">{channel}</span>
+                  <span className="text-saru-teal">{count}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="bg-saru-black p-6 rounded-lg border border-saru-cyan/30">
+            <h4 className="text-saru-teal font-semibold mb-4">Feedback by Product</h4>
+            <div className="space-y-2">
+              {summaryData.by_product && Object.entries(summaryData.by_product).map(([product, count]) => (
+                <div key={product} className="flex justify-between">
+                  <span className="text-saru-cyan">{product || 'No Product'}</span>
+                  <span className="text-saru-teal">{count}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

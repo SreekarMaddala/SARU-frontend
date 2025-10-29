@@ -17,7 +17,7 @@ export default function ChannelUserPage() {
 
   const fetchAnalytics = async (endpoint) => {
     try {
-      const res = await fetch(`http://localhost:8000/${endpoint}`, {
+      const res = await fetch(`http://localhost:8000/analytics/${endpoint}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error(`Failed to fetch ${endpoint}`);
@@ -33,7 +33,7 @@ export default function ChannelUserPage() {
       setLoading(true);
       setError(null);
       try {
-        const endpoints = ['channels', 'users'];
+        const endpoints = ['channels'];
         const results = await Promise.all(endpoints.map(fetchAnalytics));
         const data = {};
         endpoints.forEach((endpoint, index) => {
@@ -353,7 +353,6 @@ export default function ChannelUserPage() {
       {/* Content */}
       <div className="p-10 space-y-16">
         {renderChannelAnalysis()}
-        {renderUserBehavior()}
       </div>
     </div>
   );

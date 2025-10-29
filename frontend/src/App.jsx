@@ -77,7 +77,7 @@ function App() {
           }
         />
         <Route
-          path="/analytics/channel-user"
+          path="/channels-users"
           element={
             <ProtectedRoute>
               <ChannelUserPage />
