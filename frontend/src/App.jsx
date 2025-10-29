@@ -4,10 +4,11 @@ import { AdminProvider, useAdmin } from './contexts/AdminContext';
 import PageOne from './pages/PageOne';
 import FeedbackTablePage from './pages/FeedbackTablePage';
 import DashboardPage from './pages/DashboardPage';
-import AnalyticsPage from './pages/AnalyticsPage';
-import SentimentTopicsPage from './pages/SentimentTopicsPage';
-import ChannelUserPage from './pages/ChannelUserPage';
-import PerformanceAdvancedPage from './pages/PerformanceAdvancedPage';
+import AnalyticsOverviewPage from './pages/AnalyticsOverviewPage';
+import UsersAnalyticsPage from './pages/UsersAnalyticsPage';
+import CompanyPerformancePage from './pages/CompanyPerformancePage';
+import ProductsAnalyticsPage from './pages/ProductsAnalyticsPage';
+import TemporalAnalyticsPage from './pages/TemporalAnalyticsPage';
 import CustomerDataPage from './pages/CustomerDataPage';
 import ProductsPage from './pages/ProductsPage';
 import PricingPage from './pages/PricingPage';
@@ -64,13 +65,14 @@ function App() {
           path="/analytics"
           element={
             <ProtectedRoute>
-              <AnalyticsPage />
+              <AnalyticsOverviewPage />
             </ProtectedRoute>
           }
         >
-          <Route path="sentiment-topics" element={<SentimentTopicsPage />} />
-          <Route path="channels-users" element={<ChannelUserPage />} />
-          <Route path="performance-advanced" element={<PerformanceAdvancedPage />} />
+          <Route path="users" element={<UsersAnalyticsPage />} />
+          <Route path="company-performance" element={<CompanyPerformancePage />} />
+          <Route path="products" element={<ProductsAnalyticsPage />} />
+          <Route path="temporal" element={<TemporalAnalyticsPage />} />
         </Route>
         <Route
           path="/customer-data"

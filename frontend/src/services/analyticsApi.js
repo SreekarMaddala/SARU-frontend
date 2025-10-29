@@ -34,43 +34,18 @@ analyticsApi.interceptors.response.use(
 );
 
 // Analytics API functions
-export const fetchSentimentSummary = async () => {
-  const response = await analyticsApi.get("/analytics/sentiment_summary");
-  return response.data;
-};
-
-export const fetchSentimentSamples = async (limit = 20) => {
-  const response = await analyticsApi.get(`/analytics/sentiment_samples?limit=${limit}`);
-  return response.data;
-};
-
-export const fetchChannels = async () => {
-  const response = await analyticsApi.get("/analytics/channels");
-  return response.data;
-};
-
-export const fetchProducts = async () => {
-  const response = await analyticsApi.get("/analytics/products");
-  return response.data;
-};
-
-export const fetchTopics = async () => {
-  const response = await analyticsApi.get("/analytics/topics");
-  return response.data;
-};
-
-export const fetchAnalyticsSummary = async () => {
-  const response = await analyticsApi.get("/analytics/summary");
-  return response.data;
-};
-
-export const fetchUserBehavior = async () => {
+export const fetchUsers = async () => {
   const response = await analyticsApi.get("/analytics/users");
   return response.data;
 };
 
 export const fetchCompanyPerformance = async () => {
   const response = await analyticsApi.get("/analytics/company_performance");
+  return response.data;
+};
+
+export const fetchProductsAnalytics = async () => {
+  const response = await analyticsApi.get("/analytics/products");
   return response.data;
 };
 
@@ -81,11 +56,6 @@ export const fetchTemporal = async () => {
 
 export const fetchCorrelation = async () => {
   const response = await analyticsApi.get("/analytics/correlation");
-  return response.data;
-};
-
-export const fetchSentimentAnalysis = async () => {
-  const response = await analyticsApi.get("/analytics/sentiment");
   return response.data;
 };
 
