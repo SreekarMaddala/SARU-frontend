@@ -67,31 +67,11 @@ function App() {
               <AnalyticsPage />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/analytics/sentiment-topics"
-          element={
-            <ProtectedRoute>
-              <SentimentTopicsPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/channels-users"
-          element={
-            <ProtectedRoute>
-              <ChannelUserPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/analytics/performance-advanced"
-          element={
-            <ProtectedRoute>
-              <PerformanceAdvancedPage />
-            </ProtectedRoute>
-          }
-        />
+        >
+          <Route path="sentiment-topics" element={<SentimentTopicsPage />} />
+          <Route path="channels-users" element={<ChannelUserPage />} />
+          <Route path="performance-advanced" element={<PerformanceAdvancedPage />} />
+        </Route>
         <Route
           path="/customer-data"
           element={

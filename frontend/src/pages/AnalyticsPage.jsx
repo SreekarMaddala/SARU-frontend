@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function AnalyticsPage() {
@@ -157,7 +157,7 @@ export default function AnalyticsPage() {
 
         {/* Navigation Cards to Sub-Pages */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <Link to="/analytics/sentiment-topics" className="group">
+          <Link to="sentiment-topics" className="group">
             <div className="bg-saru-black p-8 rounded-lg border border-saru-cyan/30 hover:border-saru-cyan transition duration-300 group-hover:scale-105">
               <h3 className="text-2xl font-bold text-saru-cyan mb-4">Sentiment & Topics</h3>
               <p className="text-saru-teal mb-6">Analyze sentiment patterns and discover key topics in your feedback</p>
@@ -167,7 +167,7 @@ export default function AnalyticsPage() {
             </div>
           </Link>
 
-          <Link to="/analytics/channel-user" className="group">
+          <Link to="channels-users" className="group">
             <div className="bg-saru-black p-8 rounded-lg border border-saru-cyan/30 hover:border-saru-cyan transition duration-300 group-hover:scale-105">
               <h3 className="text-2xl font-bold text-saru-cyan mb-4">Channels & Users</h3>
               <p className="text-saru-teal mb-6">Understand feedback distribution across channels and user behavior</p>
@@ -177,7 +177,7 @@ export default function AnalyticsPage() {
             </div>
           </Link>
 
-          <Link to="/analytics/performance-advanced" className="group">
+          <Link to="performance-advanced" className="group">
             <div className="bg-saru-black p-8 rounded-lg border border-saru-cyan/30 hover:border-saru-cyan transition duration-300 group-hover:scale-105">
               <h3 className="text-2xl font-bold text-saru-cyan mb-4">Performance & Advanced</h3>
               <p className="text-saru-teal mb-6">Deep dive into performance metrics, temporal trends, and correlations</p>
@@ -187,6 +187,9 @@ export default function AnalyticsPage() {
             </div>
           </Link>
         </div>
+
+        {/* Outlet for nested routes */}
+        <Outlet />
       </div>
     </div>
   );
