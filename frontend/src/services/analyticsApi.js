@@ -54,9 +54,4 @@ export const fetchTemporal = async () => {
   return response.data;
 };
 
-export const fetchCorrelation = async () => {
-  const response = await analyticsApi.get("/analytics/correlation");
-  return response.data;
-};
-
 export default analyticsApi;
