@@ -5,6 +5,7 @@ import PageOne from './pages/PageOne';
 import FeedbackTablePage from './pages/FeedbackTablePage';
 import DashboardPage from './pages/DashboardPage';
 import AnalyticsOverviewPage from './pages/AnalyticsOverviewPage';
+import AIInsightsPage from './pages/AIInsightsPage';
 import UsersAnalyticsPage from './pages/UsersAnalyticsPage';
 import CompanyPerformancePage from './pages/CompanyPerformancePage';
 import ProductsAnalyticsPage from './pages/ProductsAnalyticsPage';
@@ -74,6 +75,14 @@ function App() {
           <Route path="products" element={<ProductsAnalyticsPage />} />
           <Route path="temporal" element={<TemporalAnalyticsPage />} />
         </Route>
+        <Route
+          path="/analytics/ai-insights"
+          element={
+            <ProtectedRoute>
+              <AIInsightsPage />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/customer-data"
           element={

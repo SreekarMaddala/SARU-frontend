@@ -55,3 +55,4 @@ export const fetchTemporal = async () => {
 };
 
 export default analyticsApi;
+
