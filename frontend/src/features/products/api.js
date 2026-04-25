@@ -50,8 +50,24 @@ export const updateProduct = async (productId, productData) => {
 };
 
 export const deleteProduct = async (productId) => {
-  const response = await productApi.delete(`/products/${productId}`);
-  return response.data;
+  try {
+    const response = await productApi.delete(`/products/${productId}`, {
+      headers: { "Content-Type": "application/json" },
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      const status = error.response.status;
+      const data = error.response.data || {};
+      const message =
+        data.detail || data.message || `Request failed with status ${status}`;
+      const err = new Error(message);
+      err.status = status;
+      err.data = data;
+      throw err;
+    }
+    throw new Error("Network error. Please check your connection.");
+  }
 };
 
 export default productApi;

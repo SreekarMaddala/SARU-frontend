@@ -89,13 +89,28 @@ export default function ProductsPage() {
       return;
     }
 
+    const token = localStorage.getItem("companyToken");
+    if (!token) {
+      alert("Authentication required. Please log in again.");
+      return;
+    }
+
     try {
-      await deleteProduct(productId);
-      await loadProducts();
-      alert("Product deleted successfully!");
+      const result = await deleteProduct(productId);
+      setProducts((prev) => prev.filter((p) => p.id !== productId));
+      alert(result?.message || "Product deleted successfully!");
     } catch (err) {
-      console.error("Error deleting product:", err);
-      alert("Failed to delete product");
+      console.error("Delete product error:", err);
+      if (err.status === 401) {
+        alert("Unauthorized: Your session has expired. Please log in again.");
+        localStorage.removeItem("companyToken");
+        window.location.href = "/";
+      } else if (err.status === 404) {
+        alert("Product not found. It may have already been deleted.");
+        setProducts((prev) => prev.filter((p) => p.id !== productId));
+      } else {
+        alert(err.message || "Failed to delete product");
+      }
     }
   };
 
@@ -226,9 +241,6 @@ export default function ProductsPage() {
                       #
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-saru-cyan uppercase tracking-wider">
-                      ID
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-saru-cyan uppercase tracking-wider">
                       Name
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-saru-cyan uppercase tracking-wider">
@@ -247,9 +259,6 @@ export default function ProductsPage() {
                     <tr key={product.id}>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-saru-cyan">
                         {index + 1}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-saru-cyan/70">
-                        {product.id}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-saru-cyan">
                         {product.name}
