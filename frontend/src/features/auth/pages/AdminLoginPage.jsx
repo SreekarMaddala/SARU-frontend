@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAdmin } from '../../companies/context';
+import { useAdmin } from "../../companies/context";
 import { Navigate } from "react-router-dom";
 
 export default function AdminLoginPage() {

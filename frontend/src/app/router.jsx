@@ -48,7 +48,7 @@ export default function AppRouter() {
 
         {/* Protected routes */}
         <Route
-          path="/feedback-table"
+          path="/feedback"
           element={
             <ProtectedRoute>
               <FeedbackTablePage />
@@ -85,7 +85,7 @@ export default function AppRouter() {
           }
         />
         <Route
-          path="/customer-data"
+          path="/customers"
           element={
             <ProtectedRoute>
               <CustomerDataPage />
@@ -102,7 +102,14 @@ export default function AppRouter() {
         />
 
         {/* Admin routes */}
-        <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route
+          path="/admin/login"
+          element={
+            <AdminProvider>
+              <AdminLoginPage />
+            </AdminProvider>
+          }
+        />
         <Route
           path="/admin/dashboard"
           element={

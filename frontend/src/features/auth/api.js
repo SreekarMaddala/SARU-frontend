@@ -1,10 +1,10 @@
-import { companyApi } from "../../shared/api";
+import { companyApi, BASE_URL } from "../../shared/api";
 
 /**
  * Login a company user with form-encoded credentials
  */
 export async function loginCompany(email, password) {
-  const res = await fetch("http://localhost:8000/company/login", {
+  const res = await fetch(`${BASE_URL}/company/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -25,7 +25,7 @@ export async function loginCompany(email, password) {
  * Login a company user with JSON credentials
  */
 export async function loginCompanyJSON(email, password) {
-  const res = await fetch("http://localhost:8000/company/login-json", {
+  const res = await fetch(`${BASE_URL}/company/login-json`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),

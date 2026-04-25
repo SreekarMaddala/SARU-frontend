@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getUsers } from '../api';
-import { useAuth } from '../../auth/context';
+import { getUsers } from "../api";
+import { useAuth } from "../../auth/context";
+import Layout from "../../../shared/components/Layout";
 
 export default function CustomerDataPage() {
   const { token } = useAuth();
@@ -10,13 +10,17 @@ export default function CustomerDataPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    document.title = "Customers | SARU";
+  }, []);
+
+  useEffect(() => {
     const fetchUsers = async () => {
       if (!token) {
         setError("Please login to view customer data");
         setLoading(false);
         return;
       }
-      
+
       try {
         const data = await getUsers(token);
         setUsers(data);
@@ -31,109 +35,59 @@ export default function CustomerDataPage() {
   }, [token]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-gradient-to-r from-saru-cyan via-saru-teal to-saru-teal-dark border-b border-saru-cyan/60 backdrop-blur-md shadow-lg">
-        <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
-          {/* Logo + Brand */}
-          <Link to="/" className="flex items-center space-x-6">
-            <img src="/logo - Copy.png" alt="SARU Logo" className="h-10" />
-            <div>
-              <h1 className="text-2xl font-bold text-gray-800">SARU</h1>
-              <p className="text-xs text-gray-500 tracking-wide">Feedback Collector</p>
-            </div>
-          </Link>
-
-          {/* Navigation Links */}
-          <div className="hidden md:flex space-x-8 font-medium">
-            <Link
-              to="/dashboard"
-              className="text-gray-700 hover:text-blue-600 transition-colors"
-            >
-              Dashboard
-            </Link>
-            <Link
-              to="/feedback-table"
-              className="text-gray-700 hover:text-blue-600 transition-colors"
-            >
-              Feedback Table
-            </Link>
-            <span className="text-blue-600 font-semibold border-b-2 border-blue-600">
-              Customer Data
-            </span>
-            <Link
-              to="/products"
-              className="text-gray-700 hover:text-blue-600 transition-colors"
-            >
-              Products
-            </Link>
-            <a
-              href="#"
-              className="text-gray-700 hover:text-blue-600 transition-colors"
-            >
-              About
-            </a>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button className="md:hidden text-gray-700">☰</button>
-        </div>
-      </nav>
-
-      {/* Page Content */}
-      <main className="max-w-7xl mx-auto px-6 py-10">
-        <header className="mb-10">
-          <h1 className="text-4xl font-extrabold text-gray-900">
-            👥 Customer Data
-          </h1>
-          <p className="mt-2 text-gray-600">
+    <Layout variant="protected">
+      <div className="space-y-8">
+        <div>
+          <h1 className="text-4xl font-bold text-saru-cyan">Customers</h1>
+          <p className="mt-2 text-saru-cyan/70">
             View and manage customer information from the database.
           </p>
-        </header>
+        </div>
 
-        {/* Customer Data Table */}
-        <div className="bg-white rounded-2xl shadow p-6">
+        <div className="bg-saru-slate rounded-2xl shadow-lg p-6 border border-saru-cyan/20">
           {loading ? (
             <div className="text-center py-10">
-              <p className="text-gray-500">Loading customer data...</p>
+              <p className="text-saru-cyan/70">Loading customer data...</p>
             </div>
           ) : error ? (
             <div className="text-center py-10">
-              <p className="text-red-500">Error: {error}</p>
+              <p className="text-red-400">Error: {error}</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-saru-cyan/20">
+                <thead className="bg-saru-slate-dark">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-saru-cyan uppercase tracking-wider">
                       ID
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-saru-cyan uppercase tracking-wider">
                       Name
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-saru-cyan uppercase tracking-wider">
                       Email
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-saru-cyan uppercase tracking-wider">
                       Created At
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-saru-slate divide-y divide-saru-cyan/10">
                   {users.map((user) => (
                     <tr key={user.id}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-saru-cyan">
                         {user.id}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-saru-cyan/80">
                         {user.name || "N/A"}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-saru-cyan/80">
                         {user.email}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {user.created_at ? new Date(user.created_at).toLocaleDateString() : "N/A"}
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-saru-cyan/70">
+                        {user.created_at
+                          ? new Date(user.created_at).toLocaleDateString()
+                          : "N/A"}
                       </td>
                     </tr>
                   ))}
@@ -142,7 +96,8 @@ export default function CustomerDataPage() {
             </div>
           )}
         </div>
-      </main>
-    </div>
+      </div>
+    </Layout>
   );
 }
+

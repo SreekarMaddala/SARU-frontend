@@ -1,65 +1,89 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { getProducts } from "../../products/api";
 import { fetchFeedbacks } from "../api";
-import ProductSection from "./ProductSection";
-import ImportSection from "./ImportSection";
-import FeedbackTable from "../../feedback/components/FeedbackTable";
 
 export default function Dashboard() {
   const [feedbacks, setFeedbacks] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const loadFeedbacks = async () => {
+  const loadData = async () => {
     setLoading(true);
     try {
-      const data = await fetchFeedbacks();
-      setFeedbacks(data);
+      const [feedbackData, productData] = await Promise.all([
+        fetchFeedbacks(),
+        getProducts(),
+      ]);
+      setFeedbacks(feedbackData);
+      setProducts(productData);
     } catch (err) {
-      console.error("Error fetching feedbacks:", err);
-      alert("Failed to load feedbacks");
+      console.error("Error fetching dashboard data:", err);
     }
     setLoading(false);
   };
 
-  const loadProducts = async () => {
-    try {
-      const data = await getProducts();
-      setProducts(data);
-    } catch (error) {
-      console.error("Error loading products:", error);
-    }
-  };
-
   useEffect(() => {
-    loadFeedbacks();
-    loadProducts();
+    loadData();
   }, []);
 
+  const summaryCards = [
+    {
+      title: "Users",
+      description: "User behavior analysis",
+      value: loading ? "..." : `${new Set(feedbacks.map((f) => f.user_id)).size}`,
+      link: "/analytics/users",
+      color: "border-saru-cyan/30",
+    },
+    {
+      title: "Performance",
+      description: "Company performance metrics",
+      value: loading ? "..." : `${feedbacks.length}`,
+      link: "/analytics/company-performance",
+      color: "border-green-400/30",
+    },
+    {
+      title: "Products",
+      description: "Product feedback analysis",
+      value: loading ? "..." : `${products.length}`,
+      link: "/analytics/products",
+      color: "border-blue-400/30",
+    },
+    {
+      title: "Temporal",
+      description: "Temporal analysis trends",
+      value: loading ? "..." : `${feedbacks.length}`,
+      link: "/analytics/temporal",
+      color: "border-purple-400/30",
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-neutral-950 text-neutral-100 font-body p-8 space-y-12">
-      <h1 className="text-5xl font-title font-bold text-primary-400 mb-8">
-        Varshitha Feedback Dashboard
-      </h1>
+    <div className="space-y-8">
+      <h1 className="text-4xl font-bold text-saru-cyan">Dashboard</h1>
 
-      <ProductSection
-        products={products}
-        onProductCreated={loadProducts}
-        loading={loading}
-      />
-
-      <ImportSection onImportSuccess={loadFeedbacks} />
-
-      <div className="bg-neutral-900 rounded-xl p-8 shadow-lg border border-primary-800">
-        <h2 className="text-3xl font-title text-primary-300 mb-6">All Feedback</h2>
-        {loading ? (
-          <div className="flex justify-center items-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
-          </div>
-        ) : (
-          <FeedbackTable feedbacks={feedbacks} />
-        )}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {summaryCards.map((card) => (
+          <Link
+            key={card.title}
+            to={card.link}
+            className="group block bg-saru-black-light p-6 rounded-xl border hover:scale-105 transition duration-300 shadow-lg"
+            style={{ borderColor: card.color.replace("/30", "/60") }}
+          >
+            <h3 className="text-xl font-bold text-saru-cyan mb-2">
+              {card.title}
+            </h3>
+            <p className="text-3xl font-extrabold text-saru-teal mb-2">
+              {card.value}
+            </p>
+            <p className="text-sm text-saru-cyan/70">{card.description}</p>
+            <div className="mt-4 text-saru-cyan font-semibold group-hover:text-saru-teal transition duration-300">
+              Explore →
+            </div>
+          </Link>
+        ))}
       </div>
     </div>
   );
 }
+

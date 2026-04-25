@@ -1,7 +1,7 @@
-import FeedbackTable from '../components/FeedbackTable';
 import { useState, useEffect } from "react";
-import Layout from '../../../shared/components/Layout';
-import { getAllFeedback } from '../api';
+import Layout from "../../../shared/components/Layout";
+import FeedbackTable from "../components/FeedbackTable";
+import { getAllFeedback } from "../api";
 
 export default function FeedbackTablePage() {
   const [feedbacks, setFeedbacks] = useState([]);
@@ -9,7 +9,7 @@ export default function FeedbackTablePage() {
   const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
-    document.title = "Feedback Table | SARU";
+    document.title = "Feedback | SARU";
   }, []);
 
   useEffect(() => {
@@ -30,31 +30,31 @@ export default function FeedbackTablePage() {
 
   return (
     <Layout variant="protected">
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+      <div className="space-y-8">
+        <h1 className="text-4xl font-bold text-saru-cyan">Feedback</h1>
+
         {errorMsg && (
-          <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl mb-6 text-center md:text-left">
+          <div className="bg-red-900/20 border border-red-500/30 text-red-400 p-4 rounded-xl">
             {errorMsg}
           </div>
         )}
 
-        <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+        <div className="bg-saru-slate rounded-2xl shadow-lg p-6 border border-saru-cyan/20">
           {loading ? (
-            <p className="text-gray-500 text-center py-8 animate-pulse">
+            <p className="text-saru-cyan/70 text-center py-8 animate-pulse">
               Loading feedback...
             </p>
           ) : feedbacks.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">No feedback found.</p>
+            <p className="text-saru-cyan/70 text-center py-8">
+              No feedback found.
+            </p>
           ) : (
             <div className="overflow-x-auto rounded-lg">
               <FeedbackTable feedbacks={feedbacks} />
             </div>
           )}
         </div>
-      </main>
-
-      <footer className="mt-12 py-6 text-center text-gray-500 text-sm">
-        © {new Date().getFullYear()} SARU Feedback System. All rights reserved.
-      </footer>
+      </div>
     </Layout>
   );
 }
