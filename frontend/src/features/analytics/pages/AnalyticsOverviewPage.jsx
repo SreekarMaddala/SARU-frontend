@@ -1,58 +1,10 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
-import { useAuth } from '../../auth/context';
+import Layout from '../../../shared/components/Layout';
 
 export default function AnalyticsOverviewPage() {
-  const { logout } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-    window.location.href = "/";
-  };
-
   return (
-    <div className="min-h-screen bg-saru-black">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-gradient-to-r from-saru-cyan via-saru-teal to-saru-teal-dark border-b border-saru-cyan/60 backdrop-blur-md shadow-lg">
-        <div className="flex justify-between items-center p-8">
-          <div className="flex items-center space-x-4">
-            <Link to="/" className="flex items-center space-x-4">
-              <img src="/logo - Copy.png" alt="Logo" className="h-10" />
-              <div>
-                <h1 className="text-2xl font-bold text-saru-cyan">SARU</h1>
-                <p className="text-sm text-saru-cyan/60">feedback collector</p>
-              </div>
-            </Link>
-          </div>
-          <div className="hidden md:flex space-x-8 items-center">
-            <Link to="/dashboard" className="text-saru-cyan hover:text-saru-teal transition duration-300 relative">
-              Dashboard
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-saru-teal transition-all duration-300 hover:w-full"></span>
-            </Link>
-            <span className="text-saru-teal font-semibold">Analytics</span>
-            <Link to="/feedback-table" className="text-saru-cyan hover:text-saru-teal transition duration-300 relative">
-              Feedback Table
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-saru-teal transition-all duration-300 hover:w-full"></span>
-            </Link>
-            <Link to="/customer-data" className="text-saru-cyan hover:text-saru-teal transition duration-300 relative">
-              Customer Data
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-saru-teal transition-all duration-300 hover:w-full"></span>
-            </Link>
-            <Link to="/products" className="text-saru-cyan hover:text-saru-teal transition duration-300 relative">
-              Products
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-saru-teal transition-all duration-300 hover:w-full"></span>
-            </Link>
-            <button
-              onClick={handleLogout}
-              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300"
-            >
-              Logout
-            </button>
-          </div>
-          <button className="md:hidden text-saru-cyan">☰</button>
-        </div>
-      </nav>
-
+    <Layout variant="protected">
       <div className="p-8 space-y-12">
         <h1 className="text-5xl font-bold text-saru-cyan mb-8">Analytics Overview</h1>
 
@@ -102,6 +54,6 @@ export default function AnalyticsOverviewPage() {
         {/* Outlet for nested routes */}
         <Outlet />
       </div>
-    </div>
+    </Layout>
   );
 }

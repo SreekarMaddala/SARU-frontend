@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import Layout from '../../../shared/components/Layout';
+import { AnalyticsTable } from '../components/Tables';
 import { useAuth } from '../../auth/context';
 import { fetchTemporal } from '../api';
+
+const temporalColumns = [
+  { key: 'date', header: 'Date' },
+  { key: 'feedback_count', header: 'Feedback Count', type: 'number' },
+  { key: 'avg_sentiment', header: 'Avg Sentiment', type: 'number' },
+];
 
 export default function TemporalAnalyticsPage() {
   const { token } = useAuth();
@@ -26,31 +34,14 @@ export default function TemporalAnalyticsPage() {
   if (error) return <div className="text-center py-8 text-red-500">{error}</div>;
 
   return (
-    <div className="p-8">
-      <h2 className="text-3xl font-bold text-saru-cyan mb-6">Temporal Analysis</h2>
-      <div className="bg-saru-black p-6 rounded-lg border border-saru-cyan/30">
-        <h3 className="text-saru-teal font-semibold mb-4">Daily Feedback Trends</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-saru-cyan">
-            <thead>
-              <tr className="border-b border-saru-cyan/30">
-                <th className="text-left py-2">Date</th>
-                <th className="text-left py-2">Feedback Count</th>
-                <th className="text-left py-2">Avg Sentiment</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((item, index) => (
-                <tr key={index} className="border-b border-saru-cyan/10">
-                  <td className="py-2">{item.date}</td>
-                  <td className="py-2">{item.feedback_count}</td>
-                  <td className="py-2">{item.avg_sentiment?.toFixed(2)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    <Layout variant="protected">
+      <div className="p-8">
+        <h2 className="text-3xl font-bold text-saru-cyan mb-6">Temporal Analysis</h2>
+        <div className="bg-saru-black p-6 rounded-lg border border-saru-cyan/30">
+          <h3 className="text-saru-teal font-semibold mb-4">Daily Feedback Trends</h3>
+          <AnalyticsTable data={data} columns={temporalColumns} emptyMessage="No temporal analytics data available." />
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }

@@ -54,5 +54,15 @@ export const fetchTemporal = async () => {
   return response.data;
 };
 
+export const fetchAIInsights = async () => {
+  const response = await analyticsApi.get("/agentic/insights");
+  return response.data;
+};
+
+export const runAIAnalysis = async () => {
+  const response = await analyticsApi.post("/agentic/analyze", {});
+  return response.data;
+};
+
 export default analyticsApi;
 

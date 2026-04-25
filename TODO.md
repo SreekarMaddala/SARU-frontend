@@ -1,21 +1,16 @@
-# TODO: Update Frontend Routes Efficiently
+# Analytics Pages Refactor TODO
 
-## Steps to Complete
+## Plan
+- [x] 1. Read all relevant files (completed)
+- [x] 2. Update `analytics/api.js` - add `fetchAIInsights` and `runAIAnalysis`
+- [x] 3. Refactor `UsersAnalyticsPage.jsx` - use Layout, use formatNumber
+- [x] 4. Refactor `ProductsAnalyticsPage.jsx` - use Layout, use formatNumber
+- [x] 5. Refactor `TemporalAnalyticsPage.jsx` - use Layout, use shared AnalyticsTable
+- [x] 6. Refactor `AIInsightsPage.jsx` - use Layout, use shared SentimentTrendChart and FeedbackBarChart
+- [x] 7. Verify imports and test compilation
 
-1. **Update App.jsx**
-   - Restructure routes to nest SentimentTopicsPage, ChannelUserPage, and PerformanceAdvancedPage under /analytics
-   - Make AnalyticsPage the parent route with sub-routes
+## Result
+All analytics pages have been successfully refactored. The production build (`npm run build`) completed without errors.
 
-2. **Update AnalyticsPage.jsx**
-   - Add <Outlet /> to render sub-pages
-   - Update navigation links to use relative paths (e.g., sentiment-topics, channels-users, performance-advanced)
 
-3. **Test the Implementation**
-   - Ensure nested routing works correctly
-   - Verify navigation between pages
-   - Check that authentication and styling are intact
 
-## Completed Steps
-- [x] Update App.jsx
-- [x] Update AnalyticsPage.jsx
-- [ ] Test the Implementation

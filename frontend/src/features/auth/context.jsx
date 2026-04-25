@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { loginCompany, loginCompanyJSON, logoutCompany } from "./api";
 
 const AuthContext = createContext();
 
@@ -24,63 +25,30 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  // Updated login using fetch with JSON body
   const login = async (email, password) => {
     try {
-      const res = await fetch("http://localhost:8000/company/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        const token = data.access_token;
-        localStorage.setItem("companyToken", token);
-        setToken(token);
-        setIsAuthenticated(true);
-        return { success: true };
-      } else {
-        const err = await res.json().catch(() => ({}));
-        return { success: false, message: err.detail || "Login failed" };
-      }
+      const result = await loginCompany(email, password);
+      setToken(result.token);
+      setIsAuthenticated(true);
+      return { success: true };
     } catch (error) {
-      return { success: false, message: "Network error" };
+      return { success: false, message: error.message || "Login failed" };
     }
   };
 
-  // JSON login method
   const loginJSON = async (email, password) => {
     try {
-      const res = await fetch("http://localhost:8000/company/login-json", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        const token = data.access_token;
-        localStorage.setItem("companyToken", token);
-        setToken(token);
-        setIsAuthenticated(true);
-        return { success: true };
-      } else {
-        const error = await res.json();
-        return { success: false, message: error.detail || "Login failed" };
-      }
+      const result = await loginCompanyJSON(email, password);
+      setToken(result.token);
+      setIsAuthenticated(true);
+      return { success: true };
     } catch (error) {
-      return { success: false, message: "Network error" };
+      return { success: false, message: error.message || "Login failed" };
     }
   };
 
   const logout = () => {
-    localStorage.removeItem("companyToken");
+    logoutCompany();
     setToken(null);
     setIsAuthenticated(false);
   };
