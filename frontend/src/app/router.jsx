@@ -11,7 +11,9 @@ import UsersAnalyticsPage from '../features/analytics/pages/UsersAnalyticsPage';
 import CompanyPerformancePage from '../features/companies/pages/CompanyPerformancePage';
 import ProductsAnalyticsPage from '../features/analytics/pages/ProductsAnalyticsPage';
 import TemporalAnalyticsPage from '../features/analytics/pages/TemporalAnalyticsPage';
+import CustomerRetentionPage from '../features/analytics/pages/CustomerRetentionPage';
 import CustomerDataPage from '../features/customers/pages/CustomerDataPage';
+import CustomerProfilePage from '../features/customers/pages/CustomerProfilePage';
 import ProductsPage from '../features/products/pages/ProductsPage';
 import PricingPage from '../features/landing/pages/PricingPage';
 import CareersPage from '../features/landing/pages/CareersPage';
@@ -75,6 +77,7 @@ export default function AppRouter() {
           <Route path="company-performance" element={<CompanyPerformancePage />} />
           <Route path="products" element={<ProductsAnalyticsPage />} />
           <Route path="temporal" element={<TemporalAnalyticsPage />} />
+          <Route path="retention" element={<CustomerRetentionPage />} />
         </Route>
         <Route
           path="/analytics/ai-insights"
@@ -89,6 +92,14 @@ export default function AppRouter() {
           element={
             <ProtectedRoute>
               <CustomerDataPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/customers/:customerId"
+          element={
+            <ProtectedRoute>
+              <CustomerProfilePage />
             </ProtectedRoute>
           }
         />

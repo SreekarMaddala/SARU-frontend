@@ -9,7 +9,7 @@ export default function AnalyticsOverviewPage() {
         <h1 className="text-5xl font-bold text-saru-cyan mb-8">Analytics Overview</h1>
 
         {/* Navigation Cards to Sub-Pages */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           <Link to="users" className="group">
             <div className="bg-saru-black p-8 rounded-lg border border-saru-cyan/30 hover:border-saru-cyan transition duration-300 group-hover:scale-105">
               <h3 className="text-2xl font-bold text-saru-cyan mb-4">Users</h3>
@@ -44,6 +44,16 @@ export default function AnalyticsOverviewPage() {
             <div className="bg-saru-black p-8 rounded-lg border border-saru-cyan/30 hover:border-saru-cyan transition duration-300 group-hover:scale-105">
               <h3 className="text-2xl font-bold text-saru-cyan mb-4">Temporal</h3>
               <p className="text-saru-teal mb-6">Temporal analysis trends</p>
+              <div className="text-saru-cyan font-semibold group-hover:text-saru-teal transition duration-300">
+                Explore →
+              </div>
+            </div>
+          </Link>
+
+          <Link to="retention" className="group">
+            <div className="bg-saru-black p-8 rounded-lg border border-saru-cyan/30 hover:border-saru-cyan transition duration-300 group-hover:scale-105">
+              <h3 className="text-2xl font-bold text-saru-cyan mb-4">Retention</h3>
+              <p className="text-saru-teal mb-6">Customer retention insights</p>
               <div className="text-saru-cyan font-semibold group-hover:text-saru-teal transition duration-300">
                 Explore →
               </div>

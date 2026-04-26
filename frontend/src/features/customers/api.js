@@ -53,6 +53,11 @@ export const createUser = async (userData) => {
   return response.data;
 };
 
+export const getCustomerProfile = async (userId) => {
+  const response = await usersApi.get(`/customers/${userId}/profile`);
+  return response.data;
+};
+
 export const updateUser = async (userId, userData) => {
   const response = await usersApi.put(`/customers/${userId}/`, userData);
   return response.data;

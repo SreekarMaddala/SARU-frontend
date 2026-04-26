@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { getUsers } from "../api";
 import { useAuth } from "../../auth/context";
 import Layout from "../../../shared/components/Layout";
@@ -23,7 +24,7 @@ export default function CustomerDataPage() {
       }
 
       try {
-        const data = await getUsers(token);
+        const data = await getUsers();
         setUsers(data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -112,7 +113,12 @@ export default function CustomerDataPage() {
                   {filteredUsers.map((user) => (
                     <tr key={user.id}>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-saru-cyan">
-                        {user.id}
+                        <Link
+                          to={`/customers/${user.id}`}
+                          className="underline decoration-saru-cyan/40 hover:decoration-saru-cyan"
+                        >
+                          {user.id}
+                        </Link>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-saru-cyan/80">
                         {user.name || "N/A"}

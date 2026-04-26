@@ -55,6 +55,11 @@ export const fetchTemporal = async () => {
   return response.data;
 };
 
+export const fetchCustomerRetention = async () => {
+  const response = await analyticsApi.get("/analytics/customer-retention");
+  return response.data;
+};
+
 export const fetchAIInsights = async () => {
   const response = await analyticsApi.get("/agentic/insights");
   return response.data;

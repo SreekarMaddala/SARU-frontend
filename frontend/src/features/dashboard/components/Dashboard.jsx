@@ -56,13 +56,20 @@ export default function Dashboard() {
       link: "/analytics/temporal",
       color: "border-purple-400/30",
     },
+    {
+      title: "Retention",
+      description: "Customer retention analytics",
+      value: loading ? "..." : `${new Set(feedbacks.map((f) => f.user_id)).size}`,
+      link: "/analytics/retention",
+      color: "border-amber-400/30",
+    },
   ];
 
   return (
     <div className="space-y-8">
       <h1 className="text-4xl font-bold text-saru-cyan">Dashboard</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
         {summaryCards.map((card) => (
           <Link
             key={card.title}
