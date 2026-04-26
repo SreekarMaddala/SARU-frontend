@@ -15,3 +15,9 @@
 - [x] Step 2: Update `frontend/src/features/products/pages/ProductsPage.jsx` — add auth pre-check, specific 401/404 handling, optimistic state update, and detailed error messages in `handleDelete`
 - [x] Step 3: Remove visible ID column from products table in `ProductsPage.jsx`
 
+# Implement Feedback CSV Upload
+
+## Steps
+- [x] Step 1: Create `frontend/src/features/feedback/components/CsvUploadSection.jsx` with template download, file validation, product dropdown, preview, upload, success/error states
+- [x] Step 2: Update `frontend/src/features/feedback/pages/FeedbackTablePage.jsx` to integrate CsvUploadSection and refresh feedback list after upload
+

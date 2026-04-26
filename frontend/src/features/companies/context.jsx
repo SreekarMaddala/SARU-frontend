@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
+import { BASE_URL } from "../../shared/api";
 
 const AdminContext = createContext();
 
@@ -27,7 +28,7 @@ export const AdminProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post("http://localhost:8000/admin/login", {
+      const response = await axios.post(`${BASE_URL}/admin/login`, {
         email,
         password,
       });

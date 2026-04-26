@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Layout from "../../../shared/components/Layout";
 import FeedbackTable from "../components/FeedbackTable";
+import CsvUploadSection from "../components/CsvUploadSection";
 import { getAllFeedback } from "../api";
 
 export default function FeedbackTablePage() {
@@ -8,23 +9,22 @@ export default function FeedbackTablePage() {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
 
+  const fetchFeedback = async () => {
+    setLoading(true);
+    try {
+      const data = await getAllFeedback();
+      setFeedbacks(data);
+      setErrorMsg("");
+    } catch (error) {
+      console.error("Error fetching feedback:", error);
+      setErrorMsg("Failed to load feedback. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     document.title = "Feedback | SARU";
-  }, []);
-
-  useEffect(() => {
-    const fetchFeedback = async () => {
-      try {
-        const data = await getAllFeedback();
-        setFeedbacks(data);
-      } catch (error) {
-        console.error("Error fetching feedback:", error);
-        setErrorMsg("Failed to load feedback. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchFeedback();
   }, []);
 
@@ -32,6 +32,9 @@ export default function FeedbackTablePage() {
     <Layout variant="protected">
       <div className="space-y-8">
         <h1 className="text-4xl font-bold text-saru-cyan">Feedback</h1>
+
+        {/* CSV Upload Section */}
+        <CsvUploadSection onUploadSuccess={fetchFeedback} />
 
         {errorMsg && (
           <div className="bg-red-900/20 border border-red-500/30 text-red-400 p-4 rounded-xl">
