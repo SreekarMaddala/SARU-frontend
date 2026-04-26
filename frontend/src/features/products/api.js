@@ -40,18 +40,18 @@ export const getProducts = async () => {
 };
 
 export const createProduct = async (productData) => {
-  const response = await productApi.post("/products", productData);
+  const response = await productApi.post("/products/", productData);
   return response.data;
 };
 
 export const updateProduct = async (productId, productData) => {
-  const response = await productApi.put(`/products/${productId}`, productData);
+  const response = await productApi.put(`/products/${productId}/`, productData);
   return response.data;
 };
 
 export const deleteProduct = async (productId) => {
   try {
-    const response = await productApi.delete(`/products/${productId}`, {
+    const response = await productApi.delete(`/products/${productId}/`, {
       headers: { "Content-Type": "application/json" },
     });
     return response.data;

@@ -6,6 +6,7 @@ import Layout from "../../../shared/components/Layout";
 export default function CustomerDataPage() {
   const { token } = useAuth();
   const [users, setUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -34,6 +35,19 @@ export default function CustomerDataPage() {
     fetchUsers();
   }, [token]);
 
+  const normalizedSearch = searchTerm.trim().toLowerCase();
+  const filteredUsers = users.filter((user) => {
+    if (!normalizedSearch) return true;
+    const name = (user.name || "").toLowerCase();
+    const email = (user.email || "").toLowerCase();
+    const mobile = (user.mobile || "").toLowerCase();
+    return (
+      name.includes(normalizedSearch) ||
+      email.includes(normalizedSearch) ||
+      mobile.includes(normalizedSearch)
+    );
+  });
+
   return (
     <Layout variant="protected">
       <div className="space-y-8">
@@ -45,6 +59,17 @@ export default function CustomerDataPage() {
         </div>
 
         <div className="bg-saru-slate rounded-2xl shadow-lg p-6 border border-saru-cyan/20">
+          {!loading && !error && (
+            <div className="mb-4">
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search by name, email, or mobile..."
+                className="w-full bg-saru-slate-dark text-saru-cyan border border-saru-cyan/30 rounded-lg px-4 py-2 focus:border-saru-cyan focus:outline-none"
+              />
+            </div>
+          )}
           {loading ? (
             <div className="text-center py-10">
               <p className="text-saru-cyan/70">Loading customer data...</p>
@@ -52,6 +77,14 @@ export default function CustomerDataPage() {
           ) : error ? (
             <div className="text-center py-10">
               <p className="text-red-400">Error: {error}</p>
+            </div>
+          ) : filteredUsers.length === 0 ? (
+            <div className="text-center py-10">
+              <p className="text-saru-cyan/70">
+                {users.length === 0
+                  ? "No customer data found."
+                  : "No customers match your search."}
+              </p>
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -68,12 +101,15 @@ export default function CustomerDataPage() {
                       Email
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-saru-cyan uppercase tracking-wider">
+                      Mobile
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-saru-cyan uppercase tracking-wider">
                       Created At
                     </th>
                   </tr>
                 </thead>
                 <tbody className="bg-saru-slate divide-y divide-saru-cyan/10">
-                  {users.map((user) => (
+                  {filteredUsers.map((user) => (
                     <tr key={user.id}>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-saru-cyan">
                         {user.id}
@@ -82,12 +118,15 @@ export default function CustomerDataPage() {
                         {user.name || "N/A"}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-saru-cyan/80">
-                        {user.email}
+                        {user.email?.trim() ? user.email : "-"}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-saru-cyan/80">
+                        {user.mobile?.trim() ? user.mobile : "-"}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-saru-cyan/70">
                         {user.created_at
-                          ? new Date(user.created_at).toLocaleDateString()
-                          : "N/A"}
+                          ? new Date(user.created_at).toLocaleString()
+                          : "-"}
                       </td>
                     </tr>
                   ))}

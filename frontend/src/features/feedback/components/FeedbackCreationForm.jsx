@@ -3,9 +3,18 @@ import { getProducts } from '../../products/api';
 
 export default function FeedbackCreationForm({ onSubmit, loading }) {
   const [formData, setFormData] = useState({
+    company_id: "",
     text: "",
     channel: "web",
+    email: "",
+    mobile: "",
+    name: "",
     product_id: "",
+    product_model_number: "",
+    sentiment: "",
+    topics: "",
+    sentiment_score: "",
+    likes: "",
   });
   const [products, setProducts] = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
@@ -30,6 +39,10 @@ export default function FeedbackCreationForm({ onSubmit, loading }) {
       alert("Please enter feedback text");
       return;
     }
+    if (!formData.email.trim() && !formData.mobile.trim()) {
+      alert("Please provide at least one contact: email or mobile");
+      return;
+    }
     onSubmit(formData);
   };
 
@@ -43,6 +56,18 @@ export default function FeedbackCreationForm({ onSubmit, loading }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label className="block text-saru-cyan mb-2">Company ID (Optional)</label>
+        <input
+          name="company_id"
+          type="number"
+          value={formData.company_id}
+          onChange={handleChange}
+          className="w-full bg-saru-slate-dark text-saru-cyan border border-saru-cyan/30 rounded-lg px-4 py-2 focus:border-saru-cyan focus:outline-none"
+          placeholder="Ignored if token company is enforced by backend"
+        />
+      </div>
+
       <div>
         <label className="block text-saru-cyan mb-2">Feedback Text *</label>
         <textarea
@@ -72,6 +97,41 @@ export default function FeedbackCreationForm({ onSubmit, loading }) {
       </div>
 
       <div>
+        <label className="block text-saru-cyan mb-2">Name (Optional)</label>
+        <input
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          className="w-full bg-saru-slate-dark text-saru-cyan border border-saru-cyan/30 rounded-lg px-4 py-2 focus:border-saru-cyan focus:outline-none"
+          placeholder="Customer name"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-saru-cyan mb-2">Email (Optional)</label>
+          <input
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full bg-saru-slate-dark text-saru-cyan border border-saru-cyan/30 rounded-lg px-4 py-2 focus:border-saru-cyan focus:outline-none"
+            placeholder="name@example.com"
+          />
+        </div>
+        <div>
+          <label className="block text-saru-cyan mb-2">Mobile (Optional)</label>
+          <input
+            name="mobile"
+            value={formData.mobile}
+            onChange={handleChange}
+            className="w-full bg-saru-slate-dark text-saru-cyan border border-saru-cyan/30 rounded-lg px-4 py-2 focus:border-saru-cyan focus:outline-none"
+            placeholder="+1234567890"
+          />
+        </div>
+      </div>
+
+      <div>
         <label className="block text-saru-cyan mb-2">Product (Optional)</label>
         {loadingProducts ? (
           <div className="text-saru-cyan/70">Loading products...</div>
@@ -90,6 +150,66 @@ export default function FeedbackCreationForm({ onSubmit, loading }) {
             ))}
           </select>
         )}
+      </div>
+
+      <div>
+        <label className="block text-saru-cyan mb-2">Product Model Number (Optional)</label>
+        <input
+          name="product_model_number"
+          value={formData.product_model_number}
+          onChange={handleChange}
+          className="w-full bg-saru-slate-dark text-saru-cyan border border-saru-cyan/30 rounded-lg px-4 py-2 focus:border-saru-cyan focus:outline-none"
+          placeholder="e.g. IPHONE-15-PRO"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-saru-cyan mb-2">Sentiment (Optional)</label>
+          <input
+            name="sentiment"
+            value={formData.sentiment}
+            onChange={handleChange}
+            className="w-full bg-saru-slate-dark text-saru-cyan border border-saru-cyan/30 rounded-lg px-4 py-2 focus:border-saru-cyan focus:outline-none"
+            placeholder="positive / neutral / negative"
+          />
+        </div>
+        <div>
+          <label className="block text-saru-cyan mb-2">Sentiment Score (Optional)</label>
+          <input
+            name="sentiment_score"
+            type="number"
+            step="any"
+            value={formData.sentiment_score}
+            onChange={handleChange}
+            className="w-full bg-saru-slate-dark text-saru-cyan border border-saru-cyan/30 rounded-lg px-4 py-2 focus:border-saru-cyan focus:outline-none"
+            placeholder="e.g. 0.82"
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-saru-cyan mb-2">Topics (Optional)</label>
+          <input
+            name="topics"
+            value={formData.topics}
+            onChange={handleChange}
+            className="w-full bg-saru-slate-dark text-saru-cyan border border-saru-cyan/30 rounded-lg px-4 py-2 focus:border-saru-cyan focus:outline-none"
+            placeholder="Comma-separated topics"
+          />
+        </div>
+        <div>
+          <label className="block text-saru-cyan mb-2">Likes (Optional)</label>
+          <input
+            name="likes"
+            type="number"
+            value={formData.likes}
+            onChange={handleChange}
+            className="w-full bg-saru-slate-dark text-saru-cyan border border-saru-cyan/30 rounded-lg px-4 py-2 focus:border-saru-cyan focus:outline-none"
+            placeholder="e.g. 10"
+          />
+        </div>
       </div>
 
       <button

@@ -22,7 +22,7 @@ export default function FeedbackTable({ feedbacks }) {
                 <th className="py-3 px-4 font-bold whitespace-nowrap">Topics</th>
                 <th className="py-3 px-4 font-bold whitespace-nowrap">User ID</th>
                 <th className="py-3 px-4 font-bold whitespace-nowrap">Name</th>
-                <th className="py-3 px-4 font-bold whitespace-nowrap">Email/Mobile</th>
+                <th className="py-3 px-4 font-bold whitespace-nowrap">Contact</th>
                 <th className="py-3 px-4 font-bold whitespace-nowrap">Created At</th>
               </tr>
             </thead>
@@ -64,7 +64,15 @@ export default function FeedbackTable({ feedbacks }) {
                   <td className="py-3 px-4 text-sm">{fb.topics}</td>
                   <td className="py-3 px-4 text-sm">{fb.user_id}</td>
                   <td className="py-3 px-4 text-sm">{fb.name}</td>
-                  <td className="py-3 px-4 text-sm">{fb.email_or_mobile}</td>
+                  <td className="py-3 px-4 text-sm">
+                    {fb.email && fb.mobile
+                      ? `Email: ${fb.email} | Mobile: ${fb.mobile}`
+                      : fb.email
+                      ? `Email: ${fb.email}`
+                      : fb.mobile
+                      ? `Mobile: ${fb.mobile}`
+                      : "N/A"}
+                  </td>
                   <td className="py-3 px-4 text-sm whitespace-nowrap">
                     {new Date(fb.created_at).toLocaleString()}
                   </td>

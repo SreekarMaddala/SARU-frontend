@@ -36,7 +36,16 @@ usersApi.interceptors.response.use(
 // Users API functions
 export const getUsers = async () => {
   const response = await usersApi.get("/users/");
-  return response.data;
+  const users = Array.isArray(response.data) ? response.data : [];
+
+  // Normalize payload for backward compatibility across schema versions.
+  return users.map((user) => ({
+    id: user.id,
+    name: user.name ?? null,
+    email: user.email ?? null,
+    mobile: user.mobile ?? null,
+    created_at: user.created_at ?? null,
+  }));
 };
 
 export const createUser = async (userData) => {

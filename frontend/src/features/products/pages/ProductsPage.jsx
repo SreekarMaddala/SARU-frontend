@@ -2,6 +2,22 @@ import { useState, useEffect } from "react";
 import { getProducts, createProduct, updateProduct, deleteProduct } from "../api";
 import Layout from "../../../shared/components/Layout";
 
+function getApiErrorMessage(error, fallbackMessage) {
+  const detail = error?.response?.data?.detail;
+  if (typeof detail === "string" && detail.trim()) return detail;
+  if (Array.isArray(detail) && detail.length > 0) {
+    const first = detail[0];
+    if (typeof first === "string") return first;
+    if (first?.msg) return first.msg;
+    return JSON.stringify(first);
+  }
+  if (detail && typeof detail === "object") {
+    if (detail.msg) return detail.msg;
+    return JSON.stringify(detail);
+  }
+  return error?.message || fallbackMessage;
+}
+
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -39,13 +55,17 @@ export default function ProductsPage() {
       alert("Product name is required");
       return;
     }
+    if (!formData.model_number.trim()) {
+      alert("Model number is required");
+      return;
+    }
 
     setSubmitting(true);
     try {
       await createProduct({
         name: formData.name.trim(),
         description: formData.description.trim(),
-        model_number: formData.model_number ? formData.model_number.trim() : "",
+        model_number: formData.model_number.trim(),
       });
       setFormData({ name: "", description: "", model_number: "" });
       setShowCreateForm(false);
@@ -53,7 +73,7 @@ export default function ProductsPage() {
       alert("Product created successfully!");
     } catch (err) {
       console.error("Error creating product:", err);
-      alert("Failed to create product");
+      alert(getApiErrorMessage(err, "Failed to create product"));
     } finally {
       setSubmitting(false);
     }
@@ -64,13 +84,17 @@ export default function ProductsPage() {
       alert("Product name is required");
       return;
     }
+    if (!formData.model_number.trim()) {
+      alert("Model number is required");
+      return;
+    }
 
     setSubmitting(true);
     try {
       await updateProduct(editingProduct.id, {
         name: formData.name.trim(),
         description: formData.description.trim(),
-        model_number: formData.model_number ? formData.model_number.trim() : "",
+        model_number: formData.model_number.trim(),
       });
       setFormData({ name: "", description: "", model_number: "" });
       setEditingProduct(null);
@@ -78,7 +102,7 @@ export default function ProductsPage() {
       alert("Product updated successfully!");
     } catch (err) {
       console.error("Error updating product:", err);
-      alert("Failed to update product");
+      alert(getApiErrorMessage(err, "Failed to update product"));
     } finally {
       setSubmitting(false);
     }
